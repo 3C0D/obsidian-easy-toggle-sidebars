@@ -1,21 +1,26 @@
-# Obsidian Sample Plugin modif
+# Easy toggle sidebars 
 
-I tried github cli but my release script is better
-
-- using another folder that .osbidian/plugins, so not really depending on a vault. so when doing run dev it's using the env var TEST_VAULT.   
-todo: I will maybe add more option to choose this path.  
-a script npm run cms copy manifest and styles.css to same destination  
-
-- cms: copy manifest script to TEST_VAULT
-- start: npm i + npm run dev
-- acp: add commit push
-- bacp: build + acp
-- test: test in another path (to see...)
-- release: make a tag and release
-- version better than default one with prompts
+New: double left click on leaf tab header to toggle pin. you can toggle it in options.
   
-- todo: tester test
+With RightMouseButton or MiddleMouseButton :
+- double click to toggle both sidebars
+- click and move toward the sideBar you want to toggle
+- AutoHide to automatically hide sidebars when clicking on the editor (icon in the ribbon)
+- minimal editor width, after it will reduce/close sidebars. (first try to reduce then close) 
 
+- from the ribbon (useful in canvas...): 
+  - left dbl click (on empty zone) → toggle left sidebar (the most useful)
+  - click + vertical moves or horizontal to the right 
+  - right double click → both sidebars
+
+- tab header: double left click on leaf tab header to toggle pin
+
+-from the sidebar:
+  - triple left click to go to explorer tab, triple click again to get back to previous tab 
+
+- Command "toggle both sidebars" added.
+
+![demo](fix_right_click.gif)
 
 
 ## developpement

@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sample-plugin-modif",
-	"version": "1.0.0",
-	"description": "modified sample plugin",
+	"name": "easy-toggle-sidebars",
+	"version": "2.0.1",
+	"description": "toggle sidebars with middle mouse button",
 	"main": "main.js",
 	"scripts": {
 		"dev": "tsx esbuild.config.mts",
