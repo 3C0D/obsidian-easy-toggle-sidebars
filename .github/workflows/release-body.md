@@ -1,1 +1,1 @@
-command toggle autohide
+modif script esbuild
