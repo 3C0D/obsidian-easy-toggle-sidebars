@@ -1,1 +1,1 @@
-first version migration
+command toggle autohide
