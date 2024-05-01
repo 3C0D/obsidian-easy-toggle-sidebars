@@ -89,6 +89,22 @@ export default class EasytoggleSidebar extends Plugin {
 				}
 			);
 
+			this.addCommand({
+				id: "toggle-autohide",
+				name: "Toggle autohide sidebars",
+				callback: async () => {
+					const { settings } = this;
+					settings.autoHide = !settings.autoHide;
+					await this.saveSettings();
+					this.toggleAutoHideEvent();
+					this.toggleColor();
+					new import_obsidian2.Notice(
+						settings.autoHide ? "AutoHide Enabled" : "AutoHide Disabled",
+						2e3
+					);
+				}
+			})
+
 
 			this.addCommand({
 				id: "toggle-both-sidebars",
