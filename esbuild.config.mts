@@ -19,7 +19,7 @@ if you want to view the source, please visit the github repository of this plugi
 const prod = process.argv[2] === "production";
 let outdir = "./";
 if (!prod || process.env.REAL) {
-	const vaultDir = process.env.REAL ? process.env.REAL_VAULT : process.env.TEST_VAULT;
+	const vaultDir = process.env.REAL === "1"? process.env.REAL_VAULT : process.env.TEST_VAULT;
 	outdir = `${vaultDir}/.obsidian/plugins/${manifest.id}`;
 	// check if outdir/manifest.json and outdir/styles.css exists
 	const man = `${outdir}/manifest.json`;

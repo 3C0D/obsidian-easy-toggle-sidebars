@@ -98,7 +98,7 @@ export default class EasytoggleSidebar extends Plugin {
 					await this.saveSettings();
 					this.toggleAutoHideEvent();
 					this.toggleColor();
-					new import_obsidian2.Notice(
+					new Notice(
 						settings.autoHide ? "AutoHide Enabled" : "AutoHide Disabled",
 						2e3
 					);
