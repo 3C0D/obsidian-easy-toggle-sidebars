@@ -1,4 +1,4 @@
-import { Notice, Plugin, View, WorkspaceLeaf, WorkspaceSidedock } from "obsidian";
+import { Notice, Plugin, View, WorkspaceLeaf, WorkspaceRoot, WorkspaceSidedock } from "obsidian";
 import { ETSSettingTab } from "./settings";
 
 interface ETSSettings {
@@ -11,7 +11,7 @@ interface ETSSettings {
 	autoMinRootWidth: boolean;
 	minRootWidth: number;
 	dblClickDelay: number;
-	togglePin:boolean
+	togglePin: boolean
 }
 
 export const DEFAULT_SETTINGS: ETSSettings = {
@@ -24,23 +24,23 @@ export const DEFAULT_SETTINGS: ETSSettings = {
 	autoMinRootWidth: true,
 	minRootWidth: 300,
 	dblClickDelay: 450,
-	togglePin:true,
+	togglePin: true,
 };
 
 export default class EasytoggleSidebar extends Plugin {
 	settings: ETSSettings;
-	ribbonIconEl!: HTMLElement | null;
-	private startX: number = 0;
-	private startY: number = 0;
-	private endX: number = 0;
-	private endY: number = 0;
+	ribbonIconEl: HTMLElement | null = null;
+	private startX = 0;
+	private startY = 0;
+	private endX = 0;
+	private endY = 0;
 	private isTracking = false;
 	private distanceX = 0;
 	private distanceY = 0;
 	private movedX = false;
 	private movedY = false;
 	private doubleClickTimer: NodeJS.Timeout | null = null;
-	private clicked: number = 0;
+	private clicked = 0;
 	private clickTimeout: ReturnType<typeof setTimeout> | null = null;
 	private previousActiveSplitLeaf: WorkspaceLeaf | null;
 
@@ -51,80 +51,82 @@ export default class EasytoggleSidebar extends Plugin {
 			this.autoHideON();
 		}
 
-		this.app.workspace.onLayoutReady(() => {
-			this.registerDomEvent(document, "mousedown", this.mousedownHandler);
-			this.registerDomEvent(document, "mousemove", this.mousemoveHandler);
-			this.registerDomEvent(document, "mouseup", this.mouseupHandler);
+		this.app.workspace.onLayoutReady(this.onLayoutReady.bind(this));
+	}
 
-			this.registerDomEvent(
-				document,
-				"dblclick",
-				async (evt) => {
-					this.toggleRightSidebar(evt)
-				}
-			);
+	private onLayoutReady(): void {
+		this.registerDomEvents();
+		this.registerCommands();
 
-			this.registerDomEvent(
-				document.win,
-				"click",
-				async (evt) => {
-					if (this.clickTimeout) {
-						clearTimeout(this.clickTimeout);
-					}
+		if (this.settings.autoHide) {
+			this.registerDomEvent(document, "click", this.autoHide);
+		}
 
-					if (!this.clicked) {
-						this.clicked = 1;
-					} else {
-						this.clicked++;
-					}
+		this.registerEvent(
+			this.app.workspace.on("resize", this.onResize.bind(this))
+		);
+	}
 
-					this.clickTimeout = setTimeout(async () => {
-						if (this.clicked === 3) {
-							await this.goToExplorerTab.bind(this)(evt);
-						} else if (this.clicked === 2 && this.settings.togglePin) {
-							await this.togglePin.bind(this)(evt);
-						}
-						this.clicked = 0;
-					}, 400); // to recognize the triple clic
-				}
-			);
+	private registerDomEvents(): void {
+		this.registerDomEvent(document, "mousedown", this.mousedownHandler);
+		this.registerDomEvent(document, "mousemove", this.mousemoveHandler);
+		this.registerDomEvent(document, "mouseup", this.mouseupHandler);
+		this.registerDomEvent(document, "dblclick", this.toggleRightSidebar);
+		this.registerDomEvent(document, "click", this.onClick);
+	}
 
-			this.addCommand({
-				id: "toggle-autohide",
-				name: "Toggle autohide sidebars",
-				callback: async () => {
-					const { settings } = this;
-					settings.autoHide = !settings.autoHide;
-					await this.saveSettings();
-					this.toggleAutoHideEvent();
-					this.toggleColor();
-					new Notice(
-						settings.autoHide ? "AutoHide Enabled" : "AutoHide Disabled",
-						2e3
-					);
-				}
-			})
+	private registerCommands(): void {
+		this.addCommand({
+			id: "toggle-autohide",
+			name: "Toggle autohide sidebars",
+			callback: this.toggleAutoHide.bind(this),
+		});
 
-
-			this.addCommand({
-				id: "toggle-both-sidebars",
-				name: "Toggle both sidebars",
-				callback: () => {
-					this.toggleBothSidebars();
-				},
-			});
-
-			if (this.settings.autoHide) {
-				this.registerDomEvent(document, "click", this.autoHide);
-			}
-
-			this.registerEvent(
-				(this.app as any).workspace.on("resize", () => this.onResize())
-			);
+		this.addCommand({
+			id: "toggle-both-sidebars",
+			name: "Toggle both sidebars",
+			callback: this.toggleBothSidebars.bind(this),
 		});
 	}
 
-	mousedownHandler = (evt: MouseEvent) => {
+	private async toggleAutoHide(): Promise<void> {
+		const { settings } = this;
+		settings.autoHide = !settings.autoHide;
+		await this.saveSettings();
+		this.toggleAutoHideEvent();
+		this.toggleColor();
+		new Notice(
+			settings.autoHide ? "AutoHide Enabled" : "AutoHide Disabled",
+			2000
+		);
+	}
+
+	onClick = (evt: MouseEvent) => {
+		if (this.clickTimeout) {
+			clearTimeout(this.clickTimeout);
+		}
+
+		if (!this.clicked) {
+			this.clicked = 1;
+		} else {
+			this.clicked++;
+		}
+
+		this.clickTimeout = setTimeout(async () => {
+			if (this.clicked === 3) {
+				await this.goToExplorerTab.bind(this)(evt);
+			} else if (this.clicked === 2 && this.settings.togglePin) {
+				await this.togglePin.bind(this)(evt);
+			}
+			this.clicked = 0;
+		}, 400); // to recognize the triple clic
+	};
+
+	private contextMenuHandler = (evt: MouseEvent): void => {
+		evt.preventDefault();
+	}
+
+	private mousedownHandler = (evt: MouseEvent):void => {
 		if (evt.button === 0) return;
 		this.reinitialize();
 		const { settings } = this;
@@ -235,8 +237,8 @@ export default class EasytoggleSidebar extends Plugin {
 		evt.preventDefault();
 	}
 
-	addContextMenuListener() {
-		return window.addEventListener(
+	addContextMenuListener(): void {
+		window.addEventListener(
 			"contextmenu",
 			this.contextmenuHandler,
 			true
@@ -255,9 +257,9 @@ export default class EasytoggleSidebar extends Plugin {
 		this.movedY = false;
 	}
 
-	removeContextMenuListener(delay = 20) {
-		if (this.movedX || this.movedY || this.doubleClickTimer)
-			return setTimeout(() => {
+	private removeContextMenuListener(delay = 20): void {
+		if (this.movedX || this.movedY || this.doubleClickTimer) {
+			setTimeout(() => {
 				window.removeEventListener(
 					"contextmenu",
 					this.contextmenuHandler,
@@ -267,6 +269,7 @@ export default class EasytoggleSidebar extends Plugin {
 				this.movedY = false;
 				this.doubleClickTimer = null;
 			}, delay);
+		}
 	}
 
 	toggleBothSidebars() {
@@ -286,20 +289,21 @@ export default class EasytoggleSidebar extends Plugin {
 	}
 
 	getLeftSplit() {
-		return (this.app as any).workspace.leftSplit;
+		return this.app.workspace.leftSplit as WorkspaceSidedock;
 	}
 
 	getRightSplit() {
-		return (this.app as any).workspace.rightSplit;
+		return this.app.workspace.rightSplit as WorkspaceSidedock;
 	}
 
 	getRootSplit() {
-		return (this.app as any).workspace.rootSplit;
+		return this.app.workspace.rootSplit as WorkspaceRoot;
 	}
 
 	onResize() {
 		const LS = this.getLeftSplit();
 		const RS = this.getRightSplit();
+		const R = this.getRootSplit();
 		const { settings } = this;
 		const { minRootWidth } = settings;
 
@@ -309,7 +313,7 @@ export default class EasytoggleSidebar extends Plugin {
 		) {
 			return;
 		}
-		const editorWidth = this.getRootSplit().containerEl.clientWidth;
+		const editorWidth = R.containerEl.clientWidth;
 		if (editorWidth < minRootWidth) {
 			if (LS.containerEl.clientWidth > 200) {
 				LS.setSize(200);
@@ -320,14 +324,14 @@ export default class EasytoggleSidebar extends Plugin {
 		}
 		if (editorWidth < minRootWidth) {
 			const updatedEditorWidth =
-				this.getRootSplit().containerEl.clientWidth;
+				R.containerEl.clientWidth;
 			if (updatedEditorWidth <= minRootWidth) {
 				this.toggleBothSidebars();
 			}
 		}
 	}
 
-	async toggle(side: WorkspaceSidedock, mode: number = 0) {
+	async toggle(side: WorkspaceSidedock, mode = 0) {
 		switch (mode) {
 			case 0: // Mode close
 				side.collapse();
@@ -347,19 +351,18 @@ export default class EasytoggleSidebar extends Plugin {
 		}
 	}
 
-	isOpen(side: WorkspaceSidedock) {
-		if (side.collapsed == true) return false;
-		else return true;
+	private isOpen(side: WorkspaceSidedock): boolean {
+		return !side.collapsed;
 	}
 
-	autoHide = (evt: any) => {
+	private autoHide = (evt: MouseEvent): void => {
 		const rootSplitEl = this.getRootSplit().containerEl;
-		const clickedElement = evt.target;
-		//Root body content only
-		const isBody = clickedElement.classList.contains("cm-content");
-		const isLine = clickedElement.classList.contains("cm-line");
-		const isLink = clickedElement.classList.contains("cm-underline"); // links
-		const isRoot = rootSplitEl.contains(clickedElement);
+		const element = evt.target as HTMLElement;
+		// Root body content only
+		const isBody = element.classList.contains("cm-content");
+		const isLine = element.classList.contains("cm-line");
+		const isLink = element.classList.contains("cm-underline"); // links
+		const isRoot = rootSplitEl.contains(element);
 		if (!isRoot) return;
 		if (isLine || isBody || isLink) {
 			const leftSplit = this.getLeftSplit();
@@ -368,22 +371,21 @@ export default class EasytoggleSidebar extends Plugin {
 				this.toggleBothSidebars();
 			}
 		}
-	};
+	}
 
-	toggleRightSidebar = (evt: any) => {
-		const clickedElement = evt.target;
-		const isRibbon = clickedElement.classList.contains("workspace-ribbon");
+	toggleRightSidebar = (evt: MouseEvent) => {
+		const Element = evt.target as HTMLElement;
+		const isRibbon = Element.classList.contains("workspace-ribbon");
 		if (isRibbon) {
 			const leftSplit = this.getLeftSplit();
 			this.toggle(leftSplit, 2);
 		}
 	};
 
-	goToExplorerTab = async (evt: any) => {
-		const clickedElement = evt.target;
-		const isLeftSplit = clickedElement.closest(".mod-left-split");
+	goToExplorerTab = async (evt: MouseEvent) => {
+		const isLeftSplit = (evt.target as Element).closest(".mod-left-split");
 		if (isLeftSplit) {
-			const activeLeftSplit = this.getActiveSidebarLeaf.bind(this)()[0]
+			const activeLeftSplit = this.getActiveSidebarLeaf.bind(this)()
 			const isExplorerLeaf = activeLeftSplit?.getViewState().type === 'file-explorer'
 			if (isExplorerLeaf) {
 				if (this.previousActiveSplitLeaf) this.app.workspace.revealLeaf(this.previousActiveSplitLeaf)
@@ -396,39 +398,35 @@ export default class EasytoggleSidebar extends Plugin {
 	};
 
 
-	togglePin = async (evt: any) => {
-		const clickedElement = evt.target;
-		const isTabheader = clickedElement.closest(".workspace-tab-header-inner-title");
-		if(!isTabheader) return
-		const activeLeaf = this.app.workspace.getActiveViewOfType(View)?.leaf
-		const { isMainWindow, rootSplit } = this.getLeafProperties(activeLeaf)
-		const condition = isMainWindow && rootSplit || !isMainWindow
-		if (activeLeaf && condition) { activeLeaf.togglePinned() }
-
+	private togglePin = async (evt: MouseEvent): Promise<void> => {
+		const isTabHeader = (evt.target as Element).closest(".workspace-tab-header-inner-title");
+		if (!isTabHeader) return;
+		const activeLeaf = this.app.workspace.getActiveViewOfType(View)?.leaf;
+		const { isMainWindow, rootSplit } = this.getLeafProperties(activeLeaf);
+		const condition = (isMainWindow && rootSplit) || !isMainWindow;
+		if (activeLeaf && condition) {
+			activeLeaf.togglePinned();
+		}
 	}
 
-	getLeafProperties(
-		leaf: WorkspaceLeaf | undefined,
-	): {
-		isMainWindow: boolean;
-		rootSplit: boolean;
-	} {
+	private getLeafProperties(
+		leaf: WorkspaceLeaf | undefined
+	): { isMainWindow: boolean; rootSplit: boolean } {
 		const isMainWindow = leaf?.view.containerEl.win === window;
-		const rootSplit = leaf?.getRoot() === this.app.workspace.rootSplit;
+		const rootSplit = leaf?.getRoot() === this.getRootSplit();
 		return { isMainWindow, rootSplit };
 	}
 
-	getActiveSidebarLeaf(): WorkspaceLeaf[] {
-		const leftRoot = this.app.workspace.leftSplit.getRoot()
-		const leaves: WorkspaceLeaf[] = []
+	private getActiveSidebarLeaf(): WorkspaceLeaf | undefined {
+		const leftRoot = this.getLeftSplit().getRoot();
+		const leaves: WorkspaceLeaf[] = [];
 		this.app.workspace.iterateAllLeaves((leaf) => {
-			if (leaf.getRoot() == leftRoot && leaf.view.containerEl.clientWidth > 0) {
-				leaves.push(leaf)
+			if (leaf.getRoot() === leftRoot && leaf.view.containerEl.clientWidth > 0) {
+				leaves.push(leaf);
 			}
-		})
-		return leaves
+		});
+		return leaves[0];
 	}
-
 
 	async loadSettings() {
 		this.settings = Object.assign(
