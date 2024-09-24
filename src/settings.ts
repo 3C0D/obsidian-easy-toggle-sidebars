@@ -1,5 +1,7 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
-import EasytoggleSidebar, { DEFAULT_SETTINGS } from "./main";
+import EasytoggleSidebar from "./main";
+import { toggleAutoHideEvent, toggleColor, autoHideON } from "./autoHide";
+import { DEFAULT_SETTINGS } from "./types/types";
 
 export class ETSSettingTab extends PluginSettingTab {
 	plugin: EasytoggleSidebar;
@@ -113,15 +115,15 @@ export class ETSSettingTab extends PluginSettingTab {
 						this.plugin.settings.autoHideRibbon = value;
 						if (this.plugin.settings.autoHideRibbon) {
 							this.plugin.settings.autoHide = true;
-							this.plugin.toggleAutoHideEvent();
-							this.plugin.toggleColor();
-							this.plugin.autoHideON();
+							toggleAutoHideEvent(this.plugin);
+							toggleColor(this.plugin);
+							autoHideON.bind(this.plugin)();
 						} else {
 							this.plugin.ribbonIconEl?.remove();
 							this.plugin.ribbonIconEl = null;
 							this.plugin.settings.autoHide = false;
-							this.plugin.toggleAutoHideEvent();
-							this.plugin.toggleColor();
+							toggleAutoHideEvent(this.plugin);
+							toggleColor(this.plugin);
 						}
 						await this.plugin.saveSettings();
 					});
@@ -196,6 +198,17 @@ export class ETSSettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.togglePin)
 					.onChange(async (value) => {
 						this.plugin.settings.togglePin = value;
+						await this.plugin.saveSettings();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName("reveal file clicking on view header title")
+			.addToggle((toggle) => {
+				toggle
+					.setValue(this.plugin.settings.reveal)
+					.onChange(async (value) => {
+						this.plugin.settings.reveal = value;
 						await this.plugin.saveSettings();
 					});
 			});

@@ -8,4 +8,8 @@ declare module "obsidian" {
         containerEl: HTMLElement
         setSize(width: number): void
     }
+
+    interface commands {
+        executeCommandById(id: string): Promise<void>
+    }
 }
