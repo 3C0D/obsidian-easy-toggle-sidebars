@@ -1,1 +1,1 @@
-new features. see the readme
+refined version. bugs fixed. help improved
