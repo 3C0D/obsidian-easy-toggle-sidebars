@@ -1,18 +1,25 @@
-import {  getRightSplit } from "./barTools";
+import { getLeftSplit, getRightSplit } from "./barTools";
 
-function isClickOnRightEdge(event : MouseEvent) {
-    const scroller = document.querySelector('div.cm-scroller');
-    if (!scroller) return false;
-
-    const rect = scroller.getBoundingClientRect();
+function getEdgeFromClick(event: MouseEvent, isScroller: Element) {
+    const rect = isScroller.getBoundingClientRect();
     const offsetX = event.clientX - rect.left;
 
-    return offsetX > (rect.width - 40);
+    if (offsetX > (rect.width - 40)) return 'right';
+    if (offsetX < 40) return 'left';
+
+    return null;
 }
 
-export function clickScrollBar(e : MouseEvent) {
-    const target = e.target as HTMLElement; 
-    if (target.closest('.cm-scroller') && isClickOnRightEdge(e) || target.closest('.mod-right-split')) {
+
+export function clickRightEdge(e: MouseEvent) {
+    const target = e.target as HTMLElement;
+    const isScroller = target.closest('.cm-scroller');
+    if (!isScroller) return
+    const edge = getEdgeFromClick(e, isScroller);
+    if (!edge) return
+    if (edge === 'right') {
         getRightSplit().toggle()
+    } else if (edge === 'left') {
+        getLeftSplit().toggle()
     }
 }

@@ -10,8 +10,8 @@ export function autoHideON() {
         async () => {
             settings.autoHide = !settings.autoHide;
             await this.saveSettings();
-            toggleAutoHideEvent(this);
             toggleColor(this);
+            toggleAutoHideEvent(this);
             new Notice(
                 settings.autoHide
                     ? "AutoHide Enabled"
@@ -42,21 +42,24 @@ export async function toggleAutoHide(plugin: EasytoggleSidebar): Promise<void> {
     const { settings } = plugin;
     settings.autoHide = !settings.autoHide;
     await plugin.saveSettings();
-    toggleAutoHideEvent(plugin);
-    toggleColor(plugin);
+    toggleColor(this);
+    toggleAutoHideEvent(this);
     new Notice(
         settings.autoHide ? "AutoHide Enabled" : "AutoHide Disabled",
         2000
     );
 }
 
-export function autoHide(evt: MouseEvent ): void {
+export function autoHide(evt: MouseEvent): void {
+    console.log("evt target", evt.target)
     if (!this.settings.autoHide) return
     const element = evt.target as HTMLElement;
     const isBody = element.closest(".cm-content");
     const isLine = element.closest(".cm-line");
-    const isLink = element.closest(".cm-underline"); // 
-    if (!isBody && !isLine && !isLink) return
+    const isLink = element.closest(".cm-underline");
+    const isRoot = element.closest(".mod-root");
+    if (!isRoot && !isBody && !isLine && !isLink) return;
+
 
     //all collpased 
     const leftSplit = getLeftSplit();

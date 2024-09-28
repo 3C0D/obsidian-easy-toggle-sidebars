@@ -8,8 +8,6 @@ import { registerCommands } from "./commands";
 import { mousemoveHandler } from "./mouseMove";
 import { mouseupHandler } from "./mouseUp";
 
-// menu when click and move from ribbon not good context menu 
-
 export default class EasytoggleSidebar extends Plugin {
 	settings: ETSSettings;
 	ribbonIconEl: HTMLElement | null = null;
@@ -25,7 +23,6 @@ export default class EasytoggleSidebar extends Plugin {
 	preventContextmenu: NodeJS.Timeout | null = null;
 	ribbonToggleTimer: NodeJS.Timeout | null = null;
 	clicked = 0;
-	// clickTimeout: NodeJS.Timeout | string | number | undefined;
 	previousActiveSplitLeaf: WorkspaceLeaf | null;
 
 	async onload() {

@@ -12,6 +12,6 @@ export function registerCommands(plugin: EasytoggleSidebar): void {
     plugin.addCommand({
         id: "toggle-both-sidebars",
         name: "Toggle both sidebars",
-        callback:  () => toggleBothSidebars(),
+        callback: toggleBothSidebars,
     });
 }

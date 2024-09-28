@@ -16,7 +16,7 @@ export function contextmenuListener(plugin: EasytoggleSidebar): void {
     );
 }
 
-export function removeContextMenuListener(plugin: EasytoggleSidebar, delay = 20): void {
+export function removeContextMenuListener(plugin: EasytoggleSidebar): void {
     if (plugin.movedX || plugin.movedY || plugin.preventContextmenu) {
         setTimeout(() => {
             plugin.target?.removeEventListener(
@@ -27,7 +27,7 @@ export function removeContextMenuListener(plugin: EasytoggleSidebar, delay = 20)
             plugin.movedX = false;
             plugin.movedY = false;
             plugin.preventContextmenu = null;
-        }, delay);
+        }, 20);
     }
 }
 

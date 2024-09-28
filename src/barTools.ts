@@ -17,15 +17,15 @@ export function toggleBothSidebars() {
     const isLeftOpen = isOpen(getLeftSplit());
     const isRightOpen = isOpen(getRightSplit());
     if (isLeftOpen && !isRightOpen) {
-        toggle(getLeftSplit());
+        getLeftSplit().toggle();
     } else if (isRightOpen && !isLeftOpen) {
-        toggle(getRightSplit());
+        getRightSplit().toggle();
     } else if (isRightOpen && isLeftOpen) {
-        toggle(getLeftSplit());
-        toggle(getRightSplit());
+        getLeftSplit().toggle();
+        getRightSplit().toggle();
     } else {
-        toggle(getLeftSplit(), 1);
-        toggle(getRightSplit(), 1);
+        getLeftSplit().expand();
+        getRightSplit().expand();
     }
 }
 
@@ -34,22 +34,10 @@ export function isOpen(side: WorkspaceSidedock): boolean {
 }
 
 
-export async function toggle(side: WorkspaceSidedock, mode = 0) {
-    switch (mode) {
-        case 0: // Mode close
-            side.collapse();
-            break;
-        case 1: // Mode open
-            side.expand();
-            break;
-        case 2: // Mode toggle
-            if (isOpen(side)) {
-                side.collapse();
-            } else {
-                side.expand();
-            }
-            break;
-        default:
-            break;
+export async function toggleIf(side: WorkspaceSidedock) {
+    if (isOpen(side)) {
+        side.collapse();
+    } else {
+        side.expand();
     }
 }

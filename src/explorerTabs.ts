@@ -15,14 +15,3 @@ export async function goToExplorerTab (plugin : EasytoggleSidebar, evt: MouseEve
         plugin.previousActiveSplitLeaf = activeLeftSplit
     }
 }
-
-// export function getLeftbarActiveLeaf(): WorkspaceLeaf | undefined {
-//     const leftRoot = getLeftSplit(this).getRoot();
-//     const leaves: WorkspaceLeaf[] = [];
-//     this.app.workspace.iterateAllLeaves((leaf: WorkspaceLeaf) => {
-//         if (leaf.getRoot() === leftRoot && leaf.view.containerEl.clientWidth > 0) {
-//             leaves.push(leaf);
-//         }
-//     });
-//     return leaves[0];
-// }

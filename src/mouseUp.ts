@@ -3,7 +3,7 @@ import { toggleBothSidebars, getLeftSplit, getRightSplit } from "./barTools";
 import { goToExplorerTab } from "./explorerTabs";
 import EasytoggleSidebar from "./main";
 import { reveal } from "./reveal";
-import { clickScrollBar } from "./scrollBar";
+import { clickRightEdge } from "./scrollBar";
 import { togglePin } from "./togglePin";
 import { contextmenuListener, removeContextMenuListener } from "./tools";
 
@@ -42,12 +42,15 @@ export async function mouseupHandler(plugin: EasytoggleSidebar, evt: MouseEvent)
             ((useMiddleMouse && evt.button === 1) || (useRightMouse && evt.button === 2))
         ) {
             contextmenuListener(plugin);
-            toggleBothSidebars();
+            const target = evt.target as HTMLElement;
+            const isRibbon = target.closest('.workspace-ribbon');
+            const editor = target.closest('.mod-root .view-content');
+            if (isRibbon || editor) toggleBothSidebars();
         }
         if (evt.button === 0) {
-            clickScrollBar(evt)
+            clickRightEdge(evt)
             plugin.ribbonToggleTimer = setTimeout(() => {
-                ribbonToggleSidebar(evt)
+                toggleRibbonSidebar(evt)
             }, 300);
             if (plugin.settings.togglePin) {
                 await togglePin(evt)
@@ -61,12 +64,12 @@ export async function mouseupHandler(plugin: EasytoggleSidebar, evt: MouseEvent)
             clearTimeout(plugin.ribbonToggleTimer);
             plugin.ribbonToggleTimer = null;
         }
-        ribbonToggleSidebar(evt, true);
+        // toggleRibbonSidebar(evt, true);
 
     }
 }
 
-function ribbonToggleSidebar(evt: MouseEvent, right = false) {
+function toggleRibbonSidebar(evt: MouseEvent, right = false) {
     const target = evt.target as HTMLElement;
     const isRibbon = target.closest('.workspace-ribbon');
     // const isLeftSplit = target.closest('.mod-left-split');

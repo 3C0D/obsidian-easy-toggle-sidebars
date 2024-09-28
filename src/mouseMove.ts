@@ -1,4 +1,4 @@
-import { getLeftSplit, getRightSplit, toggle } from "./barTools";
+import { getLeftSplit, getRightSplit, toggleIf } from "./barTools";
 import EasytoggleSidebar from "./main";
 import { contextmenuListener } from "./tools";
 
@@ -15,26 +15,22 @@ export function mousemoveHandler(plugin: EasytoggleSidebar, e: MouseEvent) {
     plugin.movedY = distanceY > settings.moveThresholdVert;
 
     if (plugin.movedX || plugin.movedY) {
-        moveAction(plugin);
+        if (
+            (plugin.movedX && plugin.endX < plugin.startX) ||
+            (plugin.movedY && plugin.endY < plugin.startY)
+        ) {
+            toggleIf(getLeftSplit());
+        } else if (
+            (plugin.movedX && plugin.endX > plugin.startX) ||
+            (plugin.movedY && plugin.endY > plugin.startY)
+        ) {
+            toggleIf(getRightSplit());
+        }
         plugin.startX = e.clientX;
         plugin.startY = e.clientY;
         if (plugin.button === 2) contextmenuListener(plugin);
         plugin.isTracking = false;
         plugin.button = null;
         return
-    }
-}
-
-function moveAction(plugin: EasytoggleSidebar) {
-    if (
-        (plugin.movedX && plugin.endX < plugin.startX) ||
-        (plugin.movedY && plugin.endY < plugin.startY)
-    ) {
-        toggle(getLeftSplit(), 2);
-    } else if (
-        (plugin.movedX && plugin.endX > plugin.startX) ||
-        (plugin.movedY && plugin.endY > plugin.startY)
-    ) {
-        toggle(getRightSplit(), 2);
     }
 }

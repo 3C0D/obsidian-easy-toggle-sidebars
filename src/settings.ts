@@ -14,21 +14,45 @@ export class ETSSettingTab extends PluginSettingTab {
 	display(): void {
 		const { containerEl } = this;
 		containerEl.empty();
-		containerEl.createEl("h1", { text: "Easy Toggle Sidebar" });
-		const content = `<br>With RightMouseButton or MiddleMouseButton :<br>
+		const content = `
+		<br>
+		<b>Right/Middle Mouse Click Usage:</b>
 		<ul>
-            <li>double click to toggle both sidebars </li>
-			<li>click and move toward the sideBar you want to toggle</li>
-            <li>you can do previous operations from the ribbon bar using double clic and vertical moves (up/down). this is useful when in canvas</li>
-            <li>autoHide to automatically hide sidebars when clicking on the editor</li>
-            <li>ribbon bar autoHide button switcher</li>
-            <li>hide sidebars under a minimal editor WIDTH</li>
+			<li><b>Click and move towards right/left (or top/bottom):</b> Toggles the right/left sidebar.</li>
+			<li>Double click to toggle both sidebars in the editor and the ribbon bar.</li>
 		</ul>
-		Command "toggle both sidebars" added.	
-        <br><br>`;
+
+		<b>With LeftMouseButton: </b>
+		<ul>
+		<li><b>Double/Triple click on the ribbon bar:</b> Toggles the left/right sidebar (especially useful in canvas mode). </li>
+		<li><b>Double click on the left/right edges of the editor to toggle the left/right sidebar.</li>
+		<li><b>Click on the view header title or around it:</b> Reveals the active file in the file explorer.</li>
+		<li><b>Double click on the tab header:</b> Toggles the tab pinning.</li>
+		<li>Tips: Triple click in the left sidebar to switch between active tab and explorer tab.</li>
+		</ul>
+
+		<br>
+		<b>Ohter features:</b>
+		<ul>
+			<li>Auto-hide to automatically hide sidebars when clicking on the editor.</li>
+			<li>Use the setting "minimal editor width" to automatically hide the sidebars if the editor width is less than the specified threshold.</li>
+		</ul>
+
+		<br>
+		<b>Settings:</b>
+		<p>Every setting can be customized in the settings.</p>
+		<ul>
+			<li><b>Horizontal and Vertical Move Threshold:</b> You can customize the sensitivity of the click-and-move gesture by adjusting the horizontal and vertical move thresholds in settings.</li>
+			<li><b>Right and Middle Mouse Button Activation:</b> You can enable or disable the use of the right and middle mouse buttons in settings.</li>
+			<li><b>Double-Click Delay:</b> You can customize the delay for double-click actions in settings.</li>
+		</ul>		
+		`;
+		const fragment = createFragment((el) => {
+			el.createEl("div").innerHTML = content;
+		})
 
 		containerEl.createDiv("", (el: HTMLDivElement) => {
-			el.innerHTML = content;
+			el.appendChild(fragment);
 		});
 
 		new Setting(containerEl)

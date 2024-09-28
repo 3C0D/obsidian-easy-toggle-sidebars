@@ -3,16 +3,13 @@
 All options can be configured in the settings.
 Now it's more than just a simple sidebars toggler. Images speak better than words...
 
-![alt text](Assets/topright.png)  
-  
-![alt text](Assets/left.png) 
-  
-- AutoHide to automatically hide sidebars when clicking on the editor  
-- Minimal editor width, after it will reduce/close sidebars. (first try to reduce then close) 
+![alt text](Assets/1shoot.png)  
+    
+tips: tripple left click in left sidebar to toggle between active leaf (as search) and explorer. and you can get back with another tripple click  
 
-- 2 Commands: "toggle both sidebars" and "toggle autohide"  
+- 2 Commands: "toggle both sidebars" and "toggle autohide"   
 
-First demo:
+First Old Demo:
 ![demo](Assets/fix_right_click.gif)  
   
 
