@@ -4,7 +4,7 @@
 	"version": "3.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "toggle sidebars double-clicking middle mouse button or each sidebar clicking middle mouse button and moving mouse towards the corresponding sidebar.",
-	"author": "1C0D",
+	"author": "3C0D",
 	"authorUrl": "",
 	"isDesktopOnly": true
 }
