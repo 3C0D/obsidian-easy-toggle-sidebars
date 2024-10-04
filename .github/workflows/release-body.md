@@ -1,1 +1,1 @@
-refined version. bugs fixed. help improved
+manifest name changed
