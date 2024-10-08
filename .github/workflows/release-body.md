@@ -1,1 +1,1 @@
-manifest name changed
+fixes in code (types)
