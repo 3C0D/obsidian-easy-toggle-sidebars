@@ -1,3 +1,4 @@
+import { App } from "obsidian";
 import { autoHide } from "./autoHide";
 import { toggleBothSidebars, getLeftSplit, getRightSplit } from "./barTools";
 import { goToExplorerTab } from "./explorerTabs";
@@ -7,7 +8,7 @@ import { clickRightEdge } from "./scrollBar";
 import { togglePin } from "./togglePin";
 import { contextmenuListener, removeContextMenuListener } from "./tools";
 
-export async function mouseupHandler(plugin: EasytoggleSidebar, evt: MouseEvent) {
+export async function mouseupHandler(plugin: EasytoggleSidebar, app: App, evt: MouseEvent) {
     // click & move
     if (plugin.isTracking) {
         plugin.isTracking = false;
@@ -30,7 +31,7 @@ export async function mouseupHandler(plugin: EasytoggleSidebar, evt: MouseEvent)
                 autoHide.bind(plugin)(evt);
             }
             if (plugin.settings.reveal) {
-                reveal(evt);
+                reveal(app, evt);
             }
         }
     }
@@ -53,27 +54,23 @@ export async function mouseupHandler(plugin: EasytoggleSidebar, evt: MouseEvent)
                 toggleRibbonSidebar(evt)
             }, 300);
             if (plugin.settings.togglePin) {
-                await togglePin(evt)
+                await togglePin(app, evt)
             }
         }
 
     }
     if (evt.detail === 3) {
-        await goToExplorerTab(plugin, evt);
+        await goToExplorerTab(plugin, app, evt);
         if (plugin.ribbonToggleTimer) {
             clearTimeout(plugin.ribbonToggleTimer);
             plugin.ribbonToggleTimer = null;
         }
-        // toggleRibbonSidebar(evt, true);
-
     }
 }
 
 function toggleRibbonSidebar(evt: MouseEvent, right = false) {
     const target = evt.target as HTMLElement;
     const isRibbon = target.closest('.workspace-ribbon');
-    // const isLeftSplit = target.closest('.mod-left-split');
-    // const isTreeItem = target.closest('.tree-item-self');
 
     if (right && isRibbon) {
         getRightSplit().toggle();

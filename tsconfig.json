@@ -10,7 +10,10 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "isolatedModules": true,
-	"strictNullChecks": true,
+    "strictNullChecks": true,
+    "types": [
+      "obsidian-typings"
+    ],
     "lib": [
       "DOM",
       "ES5",

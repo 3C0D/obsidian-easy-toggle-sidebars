@@ -1,5 +1,6 @@
 import { WorkspaceSidedock, WorkspaceRoot } from "obsidian";
 
+// I don't understand why it's not working if I pass app as parameter
 export function getLeftSplit() {
     return this.app.workspace.leftSplit as WorkspaceSidedock;
 }

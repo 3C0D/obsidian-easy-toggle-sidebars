@@ -1,4 +1,4 @@
-import { WorkspaceLeaf } from "obsidian";
+import { App, WorkspaceLeaf } from "obsidian";
 import EasytoggleSidebar from "./main";
 import { getLeftSplit } from "./barTools";
 
@@ -31,10 +31,10 @@ export function removeContextMenuListener(plugin: EasytoggleSidebar): void {
     }
 }
 
-export function getActiveSidebarLeaf(): WorkspaceLeaf | null {
+export function getActiveSidebarLeaf(app: App): WorkspaceLeaf | null {
     const leftRoot = getLeftSplit().getRoot();
     const leaves: WorkspaceLeaf[] = [];
-    this.app.workspace.iterateAllLeaves((leaf: WorkspaceLeaf) => {
+    app.workspace.iterateAllLeaves((leaf: WorkspaceLeaf) => {
         if (leaf.getRoot() === leftRoot && leaf.view.containerEl.clientWidth > 0) {
             leaves.push(leaf);
         }

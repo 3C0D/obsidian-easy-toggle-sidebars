@@ -3,7 +3,7 @@ import { ETSSettingTab } from "./settings";
 import { mousedownHandler } from "./mouseDown";
 import { autoHide, autoHideON } from "./autoHide";
 import { onResize } from "./window";
-import { DEFAULT_SETTINGS, ETSSettings } from "./types/types";
+import { DEFAULT_SETTINGS, ETSSettings } from "./types/variables";
 import { registerCommands } from "./commands";
 import { mousemoveHandler } from "./mouseMove";
 import { mouseupHandler } from "./mouseUp";
@@ -49,7 +49,7 @@ export default class EasytoggleSidebar extends Plugin {
 		this.registerDomEvent(document, "mousedown",
 			(e: MouseEvent) => mousedownHandler(this, e));
 		this.registerDomEvent(document, "mousemove", (e: MouseEvent) => mousemoveHandler(this, e));
-		this.registerDomEvent(document, "mouseup", (e: MouseEvent) => mouseupHandler(this, e));
+		this.registerDomEvent(document, "mouseup", (e: MouseEvent) => mouseupHandler(this, this.app, e));
 	}
 
 	async loadSettings() {

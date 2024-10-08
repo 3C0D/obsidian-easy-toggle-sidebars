@@ -1,7 +1,7 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 import EasytoggleSidebar from "./main";
 import { toggleAutoHideEvent, toggleColor, autoHideON } from "./autoHide";
-import { DEFAULT_SETTINGS } from "./types/types";
+import { DEFAULT_SETTINGS } from "./types/variables";
 
 export class ETSSettingTab extends PluginSettingTab {
 	plugin: EasytoggleSidebar;

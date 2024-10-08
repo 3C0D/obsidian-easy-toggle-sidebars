@@ -51,7 +51,6 @@ export async function toggleAutoHide(plugin: EasytoggleSidebar): Promise<void> {
 }
 
 export function autoHide(evt: MouseEvent): void {
-    console.log("evt target", evt.target)
     if (!this.settings.autoHide) return
     const element = evt.target as HTMLElement;
     const isBody = element.closest(".cm-content");
