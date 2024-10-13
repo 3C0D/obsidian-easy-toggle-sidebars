@@ -1,1 +1,1 @@
-fix release missing files
+fix reveal on long trees
