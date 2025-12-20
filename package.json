@@ -1,6 +1,6 @@
 {
 	"name": "easy-toggle-sidebars",
-	"version": "3.0.4",
+	"version": "3.1.0",
 	"description": "toggle sidebars with middle mouse button",
 	"main": "main.js",
 	"scripts": {
@@ -10,8 +10,8 @@
 		"real": "cross-env REAL=1 npm run build",
 		"acp": "tsx scripts/acp.mts",
 		"bacp": "tsx scripts/acp.mts -b",
-		"version": "tsx scripts/update-version.mts",
-		"release": "tsx scripts/release.mts"
+		"v": "tsx scripts/update-version.mts",
+		"r": "tsx scripts/release.mts"
 	},
 	"keywords": [],
 	"author": "3C0D",

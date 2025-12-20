@@ -59,6 +59,15 @@ export function autoHide(evt: MouseEvent): void {
     const isRoot = element.closest(".mod-root");
     if (!isRoot && !isBody && !isLine && !isLink) return;
 
+    // Check if in double-click zones on edges (40px)
+    const isScroller = element.closest('.cm-scroller');
+    if (isScroller) {
+        const rect = isScroller.getBoundingClientRect();
+        const offsetX = evt.clientX - rect.left;
+        if (offsetX < 40 || offsetX > (rect.width - 40)) {
+            return; // Don't trigger autoHide in double-click zones
+        }
+    }
 
     //all collpased 
     const leftSplit = getLeftSplit();
@@ -66,4 +75,3 @@ export function autoHide(evt: MouseEvent): void {
     if (leftSplit.collapsed && rightSplit.collapsed) return
     toggleBothSidebars();
 }
-
