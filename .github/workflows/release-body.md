@@ -1,1 +1,1 @@
-fix reveal on long trees
+fix: conflict autohide toggle sidebars with double click
