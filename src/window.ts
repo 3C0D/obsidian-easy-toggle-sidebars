@@ -1,6 +1,7 @@
 import { WorkspaceSidedock } from "obsidian";
 import { getLeftSplit, getRightSplit, getRootSplit, isOpen, toggleBothSidebars } from "./barTools";
 import EasytoggleSidebar from "./main";
+import { UI_CONSTANTS } from "./constants";
 
 export function onResize(plugin: EasytoggleSidebar) {
     const LS = getLeftSplit(plugin.app);
@@ -20,8 +21,7 @@ export function onResize(plugin: EasytoggleSidebar) {
         updateSidebars(LS, RS, minRootWidth);
     }
     if (editorWidth < minRootWidth) {
-        const updatedEditorWidth =
-            R.containerEl.clientWidth;
+        const updatedEditorWidth = R.containerEl.clientWidth;
         if (updatedEditorWidth <= minRootWidth) {
             toggleBothSidebars(plugin);
         }
@@ -29,10 +29,10 @@ export function onResize(plugin: EasytoggleSidebar) {
 }
 
 function updateSidebars(LS: WorkspaceSidedock, RS: WorkspaceSidedock, minRootWidth: number): void {
-    if (LS.containerEl.clientWidth > 200) {
-        LS.setSize(200);
+    if (LS.containerEl.clientWidth > UI_CONSTANTS.SIDEBAR_MIN_SIZE) {
+        LS.setSize(UI_CONSTANTS.SIDEBAR_MIN_SIZE);
     }
-    if (RS.containerEl.clientWidth > 200) {
-        RS.setSize(200);
+    if (RS.containerEl.clientWidth > UI_CONSTANTS.SIDEBAR_MIN_SIZE) {
+        RS.setSize(UI_CONSTANTS.SIDEBAR_MIN_SIZE);
     }
 }

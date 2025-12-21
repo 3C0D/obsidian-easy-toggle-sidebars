@@ -3,7 +3,8 @@ import { ETSSettingTab } from "./settings";
 import { mousedownHandler } from "./mouseDown";
 import { autoHide, autoHideON } from "./autoHide";
 import { onResize } from "./window";
-import { DEFAULT_SETTINGS, ETSSettings } from "./types/variables";
+import { ETSSettings } from "./types/variables";
+import { DEFAULT_SETTINGS } from "./constants";
 import { registerCommands } from "./commands";
 import { mousemoveHandler } from "./mouseMove";
 import { mouseupHandler } from "./mouseUp";
@@ -21,14 +22,14 @@ export default class EasytoggleSidebar extends Plugin {
 	movedY = false;
 	target: HTMLElement | null = null;
 	preventContextmenu: NodeJS.Timeout | null = null;
-	ribbonToggleTimer: NodeJS.Timeout | null = null;
+	doubleClickTimeout: NodeJS.Timeout | null = null;
 	clicked = 0;
 	previousActiveSplitLeaf: WorkspaceLeaf | null;
 
 	async onload() {
 		await this.loadSettings();
 		this.addSettingTab(new ETSSettingTab(this.app, this));
-		if (this.settings.autoHideRibbon) autoHideON.bind(this)();
+		if (this.settings.autoHideRibbon) autoHideON(this);
 		this.app.workspace.onLayoutReady(this.onLayoutReady.bind(this));
 	}
 

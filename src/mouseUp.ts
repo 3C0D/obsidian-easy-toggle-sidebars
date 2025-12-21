@@ -4,12 +4,13 @@ import { toggleBothSidebars, getLeftSplit, getRightSplit } from "./barTools";
 import { goToExplorerTab } from "./explorerTabs";
 import EasytoggleSidebar from "./main";
 import { reveal } from "./reveal";
-import { clickRightEdge } from "./scrollBar";
+import { handleEditorEdgeClick } from "./scrollBar";
 import { togglePin } from "./togglePin";
 import { contextmenuListener, removeContextMenuListener } from "./tools";
+import { ZoneDetector } from "./utils/domUtils";
 
 export async function mouseupHandler(plugin: EasytoggleSidebar, app: App, evt: MouseEvent) {
-    // click & move
+    // Click & move
     if (plugin.isTracking) {
         plugin.isTracking = false;
         plugin.button = null;
@@ -25,6 +26,8 @@ export async function mouseupHandler(plugin: EasytoggleSidebar, app: App, evt: M
         }
     }
 
+    const { useRightMouse, useMiddleMouse } = plugin.settings
+
     if (evt.detail === 1) {
         if (evt.button === 0) {
             if (plugin.settings.autoHide) {
@@ -35,49 +38,58 @@ export async function mouseupHandler(plugin: EasytoggleSidebar, app: App, evt: M
             }
         }
     }
-
-    const { useRightMouse, useMiddleMouse } = plugin.settings
-
-    if (evt.detail === 2) {
-        if (
-            ((useMiddleMouse && evt.button === 1) || (useRightMouse && evt.button === 2))
-        ) {
-            contextmenuListener(plugin);
-            const target = evt.target as HTMLElement;
-            const isRibbon = target.closest('.workspace-ribbon');
-            const editor = target.closest('.mod-root .view-content');
-            if (isRibbon || editor) toggleBothSidebars(plugin);
+    else if (evt.detail === 2) {
+        // Cancel any pending double-click action
+        if (plugin.doubleClickTimeout) {
+            clearTimeout(plugin.doubleClickTimeout);
         }
-        if (evt.button === 0) {
-            clickRightEdge(evt, plugin)
-            plugin.ribbonToggleTimer = setTimeout(() => {
-                toggleRibbonSidebar(evt, plugin)
-            }, 300);
-            if (plugin.settings.togglePin) {
-                await togglePin(app, evt)
+
+        // Capture data before timeout
+        const target = evt.target as HTMLElement;
+        const button = evt.button;
+
+        // Store the action to execute after delay
+        plugin.doubleClickTimeout = setTimeout(async () => {
+            if (
+                ((useMiddleMouse && button === 1) || (useRightMouse && button === 2))
+            ) {
+                contextmenuListener(plugin);
+                const isRibbon = ZoneDetector.isRibbonZone(target);
+                const editor = ZoneDetector.isEditorZone(target);
+                if (isRibbon || editor) toggleBothSidebars(plugin);
             }
+            if (button === 0) {
+                const isRibbon = ZoneDetector.isRibbonZone(target);
+                const isScroller = ZoneDetector.isDoubleClickZone(target, evt);
+                const isTabHeader = ZoneDetector.isTabHeader(target);
+
+                if (isScroller) {
+                    handleEditorEdgeClick(evt, plugin);
+                } else if (isRibbon) {
+                    getLeftSplit(plugin.app).toggle();
+                } else if (isTabHeader) {
+                    await togglePin(app, evt, plugin);
+                }
+            }
+            plugin.doubleClickTimeout = null;
+        }, 300); // Délai augmenté à 300ms pour une meilleure détection
+    }
+    else if (evt.detail === 3) {
+        // Cancel the pending double-click action
+        if (plugin.doubleClickTimeout) {
+            clearTimeout(plugin.doubleClickTimeout);
+            plugin.doubleClickTimeout = null;
         }
 
-    }
-    if (evt.detail === 3) {
-        await goToExplorerTab(plugin, app, evt);
-        if (plugin.ribbonToggleTimer) {
-            clearTimeout(plugin.ribbonToggleTimer);
-            plugin.ribbonToggleTimer = null;
+        const target = evt.target as HTMLElement;
+        const isRibbon = ZoneDetector.isRibbonZone(target);
+        const isLeftSplit = ZoneDetector.isLeftSplitZone(target);
+
+        if (isRibbon) {
+            getRightSplit(plugin.app).toggle();
+            return;
+        } else if (isLeftSplit) {
+            await goToExplorerTab(plugin, app, evt);
         }
-    }
-}
-
-function toggleRibbonSidebar(evt: MouseEvent, plugin: EasytoggleSidebar, right = false) {
-    const target = evt.target as HTMLElement;
-    const isRibbon = target.closest('.workspace-ribbon');
-
-    if (right && isRibbon) {
-        getRightSplit(plugin.app).toggle();
-        return
-    }
-
-    if (isRibbon) {
-        getLeftSplit(plugin.app).toggle();
     }
 }

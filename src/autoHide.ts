@@ -1,26 +1,28 @@
 import { Notice } from "obsidian";
 import { getLeftSplit, getRightSplit, toggleBothSidebars } from "./barTools";
 import EasytoggleSidebar from "./main";
+import { ZoneDetector } from "./utils/domUtils";
+import { UI_CONSTANTS } from "./constants";
 
-export function autoHideON() {
-    const { settings } = this;
-    this.ribbonIconEl = this.addRibbonIcon(
+export function autoHideON(plugin: EasytoggleSidebar): void {
+    const { settings } = plugin;
+    plugin.ribbonIconEl = plugin.addRibbonIcon(
         "move-horizontal",
         "autoHide switcher",
         async () => {
             settings.autoHide = !settings.autoHide;
-            await this.saveSettings();
-            toggleColor(this);
-            toggleAutoHideEvent(this);
+            await plugin.saveSettings();
+            toggleColor(plugin);
+            toggleAutoHideEvent(plugin);
             new Notice(
                 settings.autoHide
                     ? "AutoHide Enabled"
                     : "AutoHide Disabled",
-                2000
+                UI_CONSTANTS.NOTICE_DURATION
             );
         }
     );
-    toggleColor(this);
+    toggleColor(plugin);
 }
 
 export function toggleColor(plugin: EasytoggleSidebar) {
@@ -46,37 +48,27 @@ export async function toggleAutoHide(plugin: EasytoggleSidebar): Promise<void> {
     toggleAutoHideEvent(plugin);
     new Notice(
         settings.autoHide ? "AutoHide Enabled" : "AutoHide Disabled",
-        2000
+        UI_CONSTANTS.NOTICE_DURATION
     );
 }
 
 export function autoHide(evt: MouseEvent): void {
     if (!this.settings.autoHide) return
     const element = evt.target as HTMLElement;
-    const isBody = element.closest(".cm-content");
-    const isLine = element.closest(".cm-line");
-    const isLink = element.closest(".cm-underline");
-    const isRoot = element.closest(".mod-root");
-    if (!isRoot && !isBody && !isLine && !isLink) return;
+    
+    if (!ZoneDetector.isEditorContent(element)) return;
 
     // Check if clicking on reveal zones
-    const headerTitleContainer = element.closest('.view-header-title-container');
-    const headerTitle = element.closest('.view-header-title');
-    if (headerTitleContainer || headerTitle) return;
+    if (ZoneDetector.isRevealZone(element)) return;
 
-    // Check if in double-click zones on edges (40px)
-    const isScroller = element.closest('.cm-scroller');
-    if (isScroller) {
-        const rect = isScroller.getBoundingClientRect();
-        const offsetX = evt.clientX - rect.left;
-        if (offsetX < 40 || offsetX > (rect.width - 40)) {
-            return; // Don't trigger autoHide in double-click zones
-        }
+    // Check if in double-click zones on edges
+    if (ZoneDetector.isDoubleClickZone(element, evt)) {
+        return; // Don't trigger autoHide in double-click zones
     }
 
-    //all collpased 
+    // All collapsed
     const leftSplit = getLeftSplit(this.app);
     const rightSplit = getRightSplit(this.app);
-    if (leftSplit.collapsed && rightSplit.collapsed) return
+    if (leftSplit.collapsed && rightSplit.collapsed) return;
     toggleBothSidebars(this);
 }

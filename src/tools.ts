@@ -1,6 +1,7 @@
 import { App, WorkspaceLeaf } from "obsidian";
 import EasytoggleSidebar from "./main";
 import { getLeftSplit } from "./barTools";
+import { UI_CONSTANTS } from "./constants";
 
 
 function contextmenuHandler(evt: MouseEvent) {
@@ -27,17 +28,22 @@ export function removeContextMenuListener(plugin: EasytoggleSidebar): void {
             plugin.movedX = false;
             plugin.movedY = false;
             plugin.preventContextmenu = null;
-        }, 20);
+        }, UI_CONSTANTS.CONTEXTMENU_TIMEOUT);
     }
 }
 
 export function getActiveSidebarLeaf(app: App): WorkspaceLeaf | null {
-    const leftRoot = getLeftSplit(app).getRoot();
-    const leaves: WorkspaceLeaf[] = [];
-    app.workspace.iterateAllLeaves((leaf: WorkspaceLeaf) => {
-        if (leaf.getRoot() === leftRoot && leaf.view.containerEl.clientWidth > 0) {
-            leaves.push(leaf);
-        }
-    });
-    return leaves[0];
+    try {
+        const leftRoot = getLeftSplit(app).getRoot();
+        const leaves: WorkspaceLeaf[] = [];
+        app.workspace.iterateAllLeaves((leaf: WorkspaceLeaf) => {
+            if (leaf.getRoot() === leftRoot && leaf.view.containerEl.clientWidth > 0) {
+                leaves.push(leaf);
+            }
+        });
+        return leaves[0] || null;
+    } catch (error) {
+        console.error('Error getting active sidebar leaf:', error);
+        return null;
+    }
 }

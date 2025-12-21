@@ -12,15 +12,15 @@ function getEdgeFromClick(event: MouseEvent, isScroller: Element) {
 }
 
 
-export function clickRightEdge(e: MouseEvent, plugin: EasytoggleSidebar) {
+export function handleEditorEdgeClick(e: MouseEvent, plugin: EasytoggleSidebar) {
     const target = e.target as HTMLElement;
     const isScroller = target.closest('.cm-scroller');
-    if (!isScroller) return
+    if (!isScroller) return;
     const edge = getEdgeFromClick(e, isScroller);
-    if (!edge) return
+    if (!edge) return;
     if (edge === 'right') {
-        getRightSplit(plugin.app).toggle()
+        getRightSplit(plugin.app).toggle();
     } else if (edge === 'left') {
-        getLeftSplit(plugin.app).toggle()
+        getLeftSplit(plugin.app).toggle();
     }
 }

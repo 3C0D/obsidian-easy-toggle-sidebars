@@ -13,16 +13,5 @@ export interface ETSSettings {
 
 }
 
-export const DEFAULT_SETTINGS: ETSSettings = {
-    useRightMouse: true,
-    useMiddleMouse: true,
-    moveThresholdHor: 50,
-    moveThresholdVert: 50,
-    autoHide: true,
-    autoHideRibbon: true,
-    autoMinRootWidth: true,
-    minRootWidth: 300,
-    dblClickDelay: 450,
-    togglePin: true,
-    reveal: true
-};
+// NOTE: DEFAULT_SETTINGS are now defined in src/constants/index.ts
+// This file now only contains the interface definition

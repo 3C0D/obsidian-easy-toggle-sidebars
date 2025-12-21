@@ -6,7 +6,7 @@ export  function reveal(app: App, e: MouseEvent): void {
     const headerTitle = target.closest('.view-header-title');
 
     if (target === headerTitleContainer || target === headerTitle) {
-        // run twice to ensure the file is revealed on long trees
+        // Run twice to ensure the file is revealed on long trees
         app.commands.executeCommandById(
             "file-explorer:reveal-active-file"
         );
@@ -15,5 +15,3 @@ export  function reveal(app: App, e: MouseEvent): void {
         );
     }
 }
-
-

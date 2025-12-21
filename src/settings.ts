@@ -1,7 +1,7 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 import EasytoggleSidebar from "./main";
 import { toggleAutoHideEvent, toggleColor, autoHideON } from "./autoHide";
-import { DEFAULT_SETTINGS } from "./types/variables";
+import { DEFAULT_SETTINGS, UI_CONSTANTS } from "./constants";
 
 export class ETSSettingTab extends PluginSettingTab {
 	plugin: EasytoggleSidebar;
@@ -69,7 +69,7 @@ export class ETSSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Middle Mouse")
-			.setDesc("Activates Right Mouse to trigger operations")
+			.setDesc("Activates Middle Mouse to trigger operations")
 			.addToggle((toggle) => {
 				toggle
 					.setValue(this.plugin.settings.useMiddleMouse)
@@ -84,7 +84,7 @@ export class ETSSettingTab extends PluginSettingTab {
 			.setDesc("the most used")
 			.addSlider((slider) => {
 				slider
-					.setLimits(50, 410, 20)
+					.setLimits(UI_CONSTANTS.MOVE_THRESHOLD_MIN, UI_CONSTANTS.MOVE_THRESHOLD_MAX, UI_CONSTANTS.MOVEMENT_SLIDER_STEP)
 					.setValue(this.plugin.settings.moveThresholdHor)
 					.setDynamicTooltip()
 					.onChange(async (value) => {
@@ -108,7 +108,7 @@ export class ETSSettingTab extends PluginSettingTab {
 			.setDesc("could be used in ribbon bar, when using canvas")
 			.addSlider((slider) => {
 				slider
-					.setLimits(50, 410, 20)
+					.setLimits(UI_CONSTANTS.MOVE_THRESHOLD_MIN, UI_CONSTANTS.MOVE_THRESHOLD_MAX, UI_CONSTANTS.MOVEMENT_SLIDER_STEP)
 					.setValue(this.plugin.settings.moveThresholdVert)
 					.setDynamicTooltip()
 					.onChange(async (value) => {
@@ -141,7 +141,7 @@ export class ETSSettingTab extends PluginSettingTab {
 							this.plugin.settings.autoHide = true;
 							toggleAutoHideEvent(this.plugin);
 							toggleColor(this.plugin);
-							autoHideON.bind(this.plugin)();
+							autoHideON(this.plugin);
 						} else {
 							this.plugin.ribbonIconEl?.remove();
 							this.plugin.ribbonIconEl = null;
@@ -172,7 +172,7 @@ export class ETSSettingTab extends PluginSettingTab {
 			.setDesc("min width triggering auto reduce/close sidebars")
 			.addSlider((slider) => {
 				slider
-					.setLimits(200, 800, 10)
+					.setLimits(UI_CONSTANTS.MIN_EDITOR_WIDTH, UI_CONSTANTS.MAX_EDITOR_WIDTH, UI_CONSTANTS.SLIDER_STEP)
 					.setValue(this.plugin.settings.minRootWidth)
 					.setDynamicTooltip()
 					.onChange(async (value) => {
@@ -196,7 +196,7 @@ export class ETSSettingTab extends PluginSettingTab {
 			.setDesc("max delay to trigger a double click")
 			.addSlider((slider) => {
 				slider
-					.setLimits(200, 600, 10)
+					.setLimits(UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY - 250, UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY + 150, UI_CONSTANTS.SLIDER_STEP)
 					.setValue(this.plugin.settings.dblClickDelay)
 					.setDynamicTooltip()
 					.onChange(async (value) => {

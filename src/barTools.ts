@@ -34,8 +34,7 @@ export function isOpen(side: WorkspaceSidedock): boolean {
     return !side.collapsed;
 }
 
-
-export async function toggleIf(side: WorkspaceSidedock) {
+export function toggleIf(side: WorkspaceSidedock): void {
     if (isOpen(side)) {
         side.collapse();
     } else {
