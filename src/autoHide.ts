@@ -59,6 +59,11 @@ export function autoHide(evt: MouseEvent): void {
     const isRoot = element.closest(".mod-root");
     if (!isRoot && !isBody && !isLine && !isLink) return;
 
+    // Check if clicking on reveal zones
+    const headerTitleContainer = element.closest('.view-header-title-container');
+    const headerTitle = element.closest('.view-header-title');
+    if (headerTitleContainer || headerTitle) return;
+
     // Check if in double-click zones on edges (40px)
     const isScroller = element.closest('.cm-scroller');
     if (isScroller) {
