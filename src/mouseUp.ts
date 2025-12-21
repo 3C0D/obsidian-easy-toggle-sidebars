@@ -44,35 +44,33 @@ export async function mouseupHandler(plugin: EasytoggleSidebar, app: App, evt: M
             clearTimeout(plugin.doubleClickTimeout);
         }
 
-        // Capture data before timeout
-        const target = evt.target as HTMLElement;
-        const button = evt.button;
+        if (
+            ((useMiddleMouse && evt.button === 1) || (useRightMouse && evt.button === 2))
+        ) {
+            contextmenuListener(plugin);
+            const target = evt.target as HTMLElement;
+            const isRibbon = ZoneDetector.isRibbonZone(target);
+            const editor = ZoneDetector.isEditorZone(target);
+            if (isRibbon || editor) toggleBothSidebars(plugin);
+        }
+        if (evt.button === 0) {
+            const target = evt.target as HTMLElement;
+            const isRibbon = ZoneDetector.isRibbonZone(target);
+            const isScroller = ZoneDetector.isDoubleClickZone(target, evt);
+            const isTabHeader = ZoneDetector.isTabHeader(target);
 
-        // Store the action to execute after delay
-        plugin.doubleClickTimeout = setTimeout(async () => {
-            if (
-                ((useMiddleMouse && button === 1) || (useRightMouse && button === 2))
-            ) {
-                contextmenuListener(plugin);
-                const isRibbon = ZoneDetector.isRibbonZone(target);
-                const editor = ZoneDetector.isEditorZone(target);
-                if (isRibbon || editor) toggleBothSidebars(plugin);
-            }
-            if (button === 0) {
-                const isRibbon = ZoneDetector.isRibbonZone(target);
-                const isScroller = ZoneDetector.isDoubleClickZone(target, evt);
-                const isTabHeader = ZoneDetector.isTabHeader(target);
-
-                if (isScroller) {
-                    handleEditorEdgeClick(evt, plugin);
-                } else if (isRibbon) {
+            if (isScroller) {
+                handleEditorEdgeClick(evt, plugin);
+            } else if (isRibbon) {
+                // Apply timeout only for ribbon action
+                plugin.doubleClickTimeout = setTimeout(() => {
                     getLeftSplit(plugin.app).toggle();
-                } else if (isTabHeader) {
-                    await togglePin(app, evt, plugin);
-                }
+                    plugin.doubleClickTimeout = null;
+                }, 300);
+            } else if (isTabHeader) {
+                await togglePin(app, evt, plugin);
             }
-            plugin.doubleClickTimeout = null;
-        }, 300); // Délai augmenté à 300ms pour une meilleure détection
+        }
     }
     else if (evt.detail === 3) {
         // Cancel the pending double-click action
