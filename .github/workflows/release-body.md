@@ -1,1 +1,1 @@
-fix: conflict autohide toggle sidebars with double click
+fix: autohide+reveal/nrefactor: total refactor for cleaner code/n
