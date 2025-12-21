@@ -1,11 +1,12 @@
 import { WorkspaceSidedock } from "obsidian";
 import { getLeftSplit, getRightSplit, getRootSplit, isOpen, toggleBothSidebars } from "./barTools";
+import EasytoggleSidebar from "./main";
 
-export function onResize() {
-    const LS = getLeftSplit();
-    const RS = getRightSplit();
-    const R = getRootSplit();
-    const { settings } = this;
+export function onResize(plugin: EasytoggleSidebar) {
+    const LS = getLeftSplit(plugin.app);
+    const RS = getRightSplit(plugin.app);
+    const R = getRootSplit(plugin.app);
+    const { settings } = plugin;
     const { minRootWidth } = settings;
 
     if (
@@ -22,7 +23,7 @@ export function onResize() {
         const updatedEditorWidth =
             R.containerEl.clientWidth;
         if (updatedEditorWidth <= minRootWidth) {
-            toggleBothSidebars();
+            toggleBothSidebars(plugin);
         }
     }
 }

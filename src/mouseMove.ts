@@ -19,12 +19,12 @@ export function mousemoveHandler(plugin: EasytoggleSidebar, e: MouseEvent) {
             (plugin.movedX && plugin.endX < plugin.startX) ||
             (plugin.movedY && plugin.endY < plugin.startY)
         ) {
-            toggleIf(getLeftSplit());
+            toggleIf(getLeftSplit(plugin.app));
         } else if (
             (plugin.movedX && plugin.endX > plugin.startX) ||
             (plugin.movedY && plugin.endY > plugin.startY)
         ) {
-            toggleIf(getRightSplit());
+            toggleIf(getRightSplit(plugin.app));
         }
         plugin.startX = e.clientX;
         plugin.startY = e.clientY;

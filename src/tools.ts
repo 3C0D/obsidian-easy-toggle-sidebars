@@ -32,7 +32,7 @@ export function removeContextMenuListener(plugin: EasytoggleSidebar): void {
 }
 
 export function getActiveSidebarLeaf(app: App): WorkspaceLeaf | null {
-    const leftRoot = getLeftSplit().getRoot();
+    const leftRoot = getLeftSplit(app).getRoot();
     const leaves: WorkspaceLeaf[] = [];
     app.workspace.iterateAllLeaves((leaf: WorkspaceLeaf) => {
         if (leaf.getRoot() === leftRoot && leaf.view.containerEl.clientWidth > 0) {

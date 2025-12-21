@@ -42,8 +42,8 @@ export async function toggleAutoHide(plugin: EasytoggleSidebar): Promise<void> {
     const { settings } = plugin;
     settings.autoHide = !settings.autoHide;
     await plugin.saveSettings();
-    toggleColor(this);
-    toggleAutoHideEvent(this);
+    toggleColor(plugin);
+    toggleAutoHideEvent(plugin);
     new Notice(
         settings.autoHide ? "AutoHide Enabled" : "AutoHide Disabled",
         2000
@@ -70,8 +70,8 @@ export function autoHide(evt: MouseEvent): void {
     }
 
     //all collpased 
-    const leftSplit = getLeftSplit();
-    const rightSplit = getRightSplit();
+    const leftSplit = getLeftSplit(this.app);
+    const rightSplit = getRightSplit(this.app);
     if (leftSplit.collapsed && rightSplit.collapsed) return
-    toggleBothSidebars();
+    toggleBothSidebars(this);
 }

@@ -1,32 +1,32 @@
-import { WorkspaceSidedock, WorkspaceRoot } from "obsidian";
+import { WorkspaceSidedock, WorkspaceRoot, App } from "obsidian";
+import EasytoggleSidebar from "./main";
 
-// I don't understand why it's not working if I pass app as parameter
-export function getLeftSplit() {
-    return this.app.workspace.leftSplit as WorkspaceSidedock;
+export function getLeftSplit(app: App) {
+    return app.workspace.leftSplit as WorkspaceSidedock;
 }
 
-export function getRightSplit() {
-    return this.app.workspace.rightSplit as WorkspaceSidedock;
+export function getRightSplit(app: App) {
+    return app.workspace.rightSplit as WorkspaceSidedock;
 }
 
-export function getRootSplit() {
-    return this.app.workspace.rootSplit as WorkspaceRoot;
+export function getRootSplit(app: App) {
+    return app.workspace.rootSplit as WorkspaceRoot;
 }
 
 
-export function toggleBothSidebars() {
-    const isLeftOpen = isOpen(getLeftSplit());
-    const isRightOpen = isOpen(getRightSplit());
+export function toggleBothSidebars(plugin: EasytoggleSidebar) {
+    const isLeftOpen = isOpen(getLeftSplit(plugin.app));
+    const isRightOpen = isOpen(getRightSplit(plugin.app));
     if (isLeftOpen && !isRightOpen) {
-        getLeftSplit().toggle();
+        getLeftSplit(plugin.app).toggle();
     } else if (isRightOpen && !isLeftOpen) {
-        getRightSplit().toggle();
+        getRightSplit(plugin.app).toggle();
     } else if (isRightOpen && isLeftOpen) {
-        getLeftSplit().toggle();
-        getRightSplit().toggle();
+        getLeftSplit(plugin.app).toggle();
+        getRightSplit(plugin.app).toggle();
     } else {
-        getLeftSplit().expand();
-        getRightSplit().expand();
+        getLeftSplit(plugin.app).expand();
+        getRightSplit(plugin.app).expand();
     }
 }
 

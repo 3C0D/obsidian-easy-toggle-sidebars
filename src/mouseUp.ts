@@ -46,12 +46,12 @@ export async function mouseupHandler(plugin: EasytoggleSidebar, app: App, evt: M
             const target = evt.target as HTMLElement;
             const isRibbon = target.closest('.workspace-ribbon');
             const editor = target.closest('.mod-root .view-content');
-            if (isRibbon || editor) toggleBothSidebars();
+            if (isRibbon || editor) toggleBothSidebars(plugin);
         }
         if (evt.button === 0) {
-            clickRightEdge(evt)
+            clickRightEdge(evt, plugin)
             plugin.ribbonToggleTimer = setTimeout(() => {
-                toggleRibbonSidebar(evt)
+                toggleRibbonSidebar(evt, plugin)
             }, 300);
             if (plugin.settings.togglePin) {
                 await togglePin(app, evt)
@@ -68,16 +68,16 @@ export async function mouseupHandler(plugin: EasytoggleSidebar, app: App, evt: M
     }
 }
 
-function toggleRibbonSidebar(evt: MouseEvent, right = false) {
+function toggleRibbonSidebar(evt: MouseEvent, plugin: EasytoggleSidebar, right = false) {
     const target = evt.target as HTMLElement;
     const isRibbon = target.closest('.workspace-ribbon');
 
     if (right && isRibbon) {
-        getRightSplit().toggle();
+        getRightSplit(plugin.app).toggle();
         return
     }
 
     if (isRibbon) {
-        getLeftSplit().toggle();
+        getLeftSplit(plugin.app).toggle();
     }
 }

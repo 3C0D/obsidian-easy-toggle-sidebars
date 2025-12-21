@@ -41,7 +41,7 @@ export default class EasytoggleSidebar extends Plugin {
 		}
 
 		this.registerEvent(
-			this.app.workspace.on("resize", onResize.bind(this))
+			this.app.workspace.on("resize", () => onResize(this))
 		);
 	}
 

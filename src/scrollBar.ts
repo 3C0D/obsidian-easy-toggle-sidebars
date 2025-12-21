@@ -1,4 +1,5 @@
 import { getLeftSplit, getRightSplit } from "./barTools";
+import EasytoggleSidebar from "./main";
 
 function getEdgeFromClick(event: MouseEvent, isScroller: Element) {
     const rect = isScroller.getBoundingClientRect();
@@ -11,15 +12,15 @@ function getEdgeFromClick(event: MouseEvent, isScroller: Element) {
 }
 
 
-export function clickRightEdge(e: MouseEvent) {
+export function clickRightEdge(e: MouseEvent, plugin: EasytoggleSidebar) {
     const target = e.target as HTMLElement;
     const isScroller = target.closest('.cm-scroller');
     if (!isScroller) return
     const edge = getEdgeFromClick(e, isScroller);
     if (!edge) return
     if (edge === 'right') {
-        getRightSplit().toggle()
+        getRightSplit(plugin.app).toggle()
     } else if (edge === 'left') {
-        getLeftSplit().toggle()
+        getLeftSplit(plugin.app).toggle()
     }
 }
