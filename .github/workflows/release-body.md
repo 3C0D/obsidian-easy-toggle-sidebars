@@ -1,1 +1,1 @@
-fix: autohide+reveal/nrefactor: total refactor for cleaner code/n
+fix: timeout only on ribbon double click
