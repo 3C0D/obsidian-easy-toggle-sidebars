@@ -1,9 +1,9 @@
 import { App, WorkspaceLeaf } from 'obsidian';
-import EasytoggleSidebar from './main';
-import { getLeftSplit } from './barTools';
-import { UI_CONSTANTS } from './constants';
+import EasytoggleSidebar from './main.ts';
+import { getLeftSplit } from './barTools.ts';
+import { UI_CONSTANTS } from './constants/index.ts';
 
-function contextmenuHandler(evt: MouseEvent) {
+function contextmenuHandler(evt: MouseEvent): void {
 	evt.preventDefault();
 }
 

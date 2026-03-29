@@ -5,11 +5,11 @@ import {
 	getRootSplit,
 	isOpen,
 	toggleBothSidebars
-} from './barTools';
-import EasytoggleSidebar from './main';
-import { UI_CONSTANTS } from './constants';
+} from './barTools.ts';
+import EasytoggleSidebar from './main.ts';
+import { UI_CONSTANTS } from './constants/index.ts';
 
-export function onResize(plugin: EasytoggleSidebar) {
+export function onResize(plugin: EasytoggleSidebar): void {
 	const LS = getLeftSplit(plugin.app);
 	const RS = getRightSplit(plugin.app);
 	const R = getRootSplit(plugin.app);

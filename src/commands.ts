@@ -1,6 +1,6 @@
-import { toggleAutoHide } from './autoHide';
-import { toggleBothSidebars } from './barTools';
-import EasytoggleSidebar from './main';
+import { toggleAutoHide } from './autoHide.ts';
+import { toggleBothSidebars } from './barTools.ts';
+import EasytoggleSidebar from './main.ts';
 
 export function registerCommands(plugin: EasytoggleSidebar): void {
 	plugin.addCommand({

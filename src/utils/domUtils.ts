@@ -1,4 +1,4 @@
-import { CSS_SELECTORS, UI_CONSTANTS } from '../constants';
+import { CSS_SELECTORS, UI_CONSTANTS } from '../constants/index.ts';
 
 /**
  * Utilities for DOM zone detection and UI interactions

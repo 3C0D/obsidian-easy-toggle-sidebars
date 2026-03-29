@@ -1,6 +1,6 @@
 import { App } from 'obsidian';
-import EasytoggleSidebar from './main';
-import { getActiveSidebarLeaf } from './tools';
+import EasytoggleSidebar from './main.ts';
+import { getActiveSidebarLeaf } from './tools.ts';
 
 /**
  * Switch between active tab and explorer tab in left sidebar,
@@ -11,7 +11,7 @@ export async function goToExplorerTab(
 	plugin: EasytoggleSidebar,
 	app: App,
 	evt: MouseEvent
-) {
+): Promise<void> {
 	const targetElement = evt.target as Element;
 	const isLeftSplit = targetElement.closest('.mod-left-split');
 

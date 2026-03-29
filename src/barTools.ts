@@ -1,19 +1,19 @@
 import { WorkspaceSidedock, WorkspaceRoot, App } from 'obsidian';
-import EasytoggleSidebar from './main';
+import EasytoggleSidebar from './main.ts';
 
-export function getLeftSplit(app: App) {
+export function getLeftSplit(app: App): WorkspaceSidedock {
 	return app.workspace.leftSplit as WorkspaceSidedock;
 }
 
-export function getRightSplit(app: App) {
+export function getRightSplit(app: App): WorkspaceSidedock {
 	return app.workspace.rightSplit as WorkspaceSidedock;
 }
 
-export function getRootSplit(app: App) {
+export function getRootSplit(app: App): WorkspaceRoot {
 	return app.workspace.rootSplit as WorkspaceRoot;
 }
 
-export function toggleBothSidebars(plugin: EasytoggleSidebar) {
+export function toggleBothSidebars(plugin: EasytoggleSidebar): void {
 	const isLeftOpen = isOpen(getLeftSplit(plugin.app));
 	const isRightOpen = isOpen(getRightSplit(plugin.app));
 	if (isLeftOpen && !isRightOpen) {

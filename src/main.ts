@@ -1,13 +1,13 @@
 import { Plugin, WorkspaceLeaf } from 'obsidian';
-import { ETSSettingTab } from './settings';
-import { mousedownHandler } from './mouseDown';
-import { autoHide, autoHideON } from './autoHide';
-import { onResize } from './window';
-import { ETSSettings } from './types/variables';
-import { DEFAULT_SETTINGS } from './constants';
-import { registerCommands } from './commands';
-import { mousemoveHandler } from './mouseMove';
-import { mouseupHandler } from './mouseUp';
+import { ETSSettingTab } from './settings.ts';
+import { mousedownHandler } from './mouseDown.ts';
+import { autoHide, autoHideON } from './autoHide.ts';
+import { onResize } from './window.ts';
+import type{ ETSSettings } from './types/variables.ts';
+import { DEFAULT_SETTINGS } from './constants/index.ts';
+import { registerCommands } from './commands.ts';
+import { mousemoveHandler } from './mouseMove.ts';
+import { mouseupHandler } from './mouseUp.ts';
 
 export default class EasytoggleSidebar extends Plugin {
 	settings: ETSSettings;
@@ -26,7 +26,7 @@ export default class EasytoggleSidebar extends Plugin {
 	clicked = 0;
 	previousActiveSplitLeaf: WorkspaceLeaf | null;
 
-	async onload() {
+	async onload(): Promise<void> {
 		await this.loadSettings();
 		this.addSettingTab(new ETSSettingTab(this.app, this));
 		if (this.settings.autoHideRibbon) autoHideON(this);
@@ -56,11 +56,11 @@ export default class EasytoggleSidebar extends Plugin {
 		);
 	}
 
-	async loadSettings() {
+	async loadSettings(): Promise<void> {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
 
-	async saveSettings() {
+	async saveSettings(): Promise<void> {
 		await this.saveData(this.settings);
 	}
 }

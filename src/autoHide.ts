@@ -1,8 +1,8 @@
 import { Notice } from 'obsidian';
-import { getLeftSplit, getRightSplit, toggleBothSidebars } from './barTools';
-import EasytoggleSidebar from './main';
-import { ZoneDetector } from './utils/domUtils';
-import { UI_CONSTANTS } from './constants';
+import { getLeftSplit, getRightSplit, toggleBothSidebars } from './barTools.ts';
+import EasytoggleSidebar from './main.ts';
+import { ZoneDetector } from './utils/domUtils.ts';
+import { UI_CONSTANTS } from './constants/index.ts';
 
 export function autoHideON(plugin: EasytoggleSidebar): void {
 	const { settings } = plugin;
@@ -23,13 +23,13 @@ export function autoHideON(plugin: EasytoggleSidebar): void {
 	toggleColor(plugin);
 }
 
-export function toggleColor(plugin: EasytoggleSidebar) {
+export function toggleColor(plugin: EasytoggleSidebar): void {
 	plugin.settings.autoHide
 		? plugin.ribbonIconEl?.addClass('ribbon-color')
 		: plugin.ribbonIconEl?.removeClass('ribbon-color');
 }
 
-export function toggleAutoHideEvent(plugin: EasytoggleSidebar) {
+export function toggleAutoHideEvent(plugin: EasytoggleSidebar): void {
 	if (plugin.settings.autoHide) {
 		plugin.registerDomEvent(document, 'click', autoHide.bind(plugin));
 	} else {

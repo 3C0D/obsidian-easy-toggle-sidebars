@@ -1,19 +1,19 @@
 import { App } from 'obsidian';
-import { autoHide } from './autoHide';
-import { toggleBothSidebars, getLeftSplit, getRightSplit } from './barTools';
-import { goToExplorerTab } from './explorerTabs';
-import EasytoggleSidebar from './main';
-import { reveal } from './reveal';
-import { handleEditorEdgeClick } from './scrollBar';
-import { togglePin } from './togglePin';
-import { contextmenuListener, removeContextMenuListener } from './tools';
-import { ZoneDetector } from './utils/domUtils';
+import { autoHide } from './autoHide.ts';
+import { toggleBothSidebars, getLeftSplit, getRightSplit } from './barTools.ts';
+import { goToExplorerTab } from './explorerTabs.ts';
+import EasytoggleSidebar from './main.ts';
+import { reveal } from './reveal.ts';
+import { handleEditorEdgeClick } from './scrollBar.ts';
+import { togglePin } from './togglePin.ts';
+import { contextmenuListener, removeContextMenuListener } from './tools.ts';
+import { ZoneDetector } from './utils/domUtils.ts';
 
 export async function mouseupHandler(
 	plugin: EasytoggleSidebar,
 	app: App,
 	evt: MouseEvent
-) {
+): Promise<void> {
 	// Click & move
 	if (plugin.isTracking) {
 		plugin.isTracking = false;

@@ -1,8 +1,8 @@
-import { getLeftSplit, getRightSplit, toggleIf } from './barTools';
-import EasytoggleSidebar from './main';
-import { contextmenuListener } from './tools';
+import { getLeftSplit, getRightSplit, toggleIf } from './barTools.ts';
+import EasytoggleSidebar from './main.ts';
+import { contextmenuListener } from './tools.ts';
 
-export function mousemoveHandler(plugin: EasytoggleSidebar, e: MouseEvent) {
+export function mousemoveHandler(plugin: EasytoggleSidebar, e: MouseEvent): void {
 	if (!plugin.button || plugin.button === 0 || !plugin.isTracking) return;
 	const { settings } = plugin;
 	plugin.endX = e.clientX;
