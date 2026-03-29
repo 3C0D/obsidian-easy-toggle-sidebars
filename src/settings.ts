@@ -1,7 +1,7 @@
-import { App, PluginSettingTab, Setting } from "obsidian";
-import EasytoggleSidebar from "./main";
-import { toggleAutoHideEvent, toggleColor, autoHideON } from "./autoHide";
-import { DEFAULT_SETTINGS, UI_CONSTANTS } from "./constants";
+import { App, PluginSettingTab, Setting } from 'obsidian';
+import EasytoggleSidebar from './main';
+import { toggleAutoHideEvent, toggleColor, autoHideON } from './autoHide';
+import { DEFAULT_SETTINGS, UI_CONSTANTS } from './constants';
 
 export class ETSSettingTab extends PluginSettingTab {
 	plugin: EasytoggleSidebar;
@@ -48,28 +48,26 @@ export class ETSSettingTab extends PluginSettingTab {
 		</ul>		
 		`;
 		const fragment = createFragment((el) => {
-			el.createEl("div").innerHTML = content;
-		})
+			el.createEl('div').innerHTML = content;
+		});
 
-		containerEl.createDiv("", (el: HTMLDivElement) => {
+		containerEl.createDiv('', (el: HTMLDivElement) => {
 			el.appendChild(fragment);
 		});
 
 		new Setting(containerEl)
-			.setName("Right Mouse")
-			.setDesc("Activates Right Mouse to trigger operations")
+			.setName('Right Mouse')
+			.setDesc('Activates Right Mouse to trigger operations')
 			.addToggle((toggle) => {
-				toggle
-					.setValue(this.plugin.settings.useRightMouse)
-					.onChange((value) => {
-						this.plugin.settings.useRightMouse = value;
-						this.plugin.saveSettings();
-					});
+				toggle.setValue(this.plugin.settings.useRightMouse).onChange((value) => {
+					this.plugin.settings.useRightMouse = value;
+					this.plugin.saveSettings();
+				});
 			});
 
 		new Setting(containerEl)
-			.setName("Middle Mouse")
-			.setDesc("Activates Middle Mouse to trigger operations")
+			.setName('Middle Mouse')
+			.setDesc('Activates Middle Mouse to trigger operations')
 			.addToggle((toggle) => {
 				toggle
 					.setValue(this.plugin.settings.useMiddleMouse)
@@ -80,11 +78,15 @@ export class ETSSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("Horizontal Move threshold(px)")
-			.setDesc("the most used")
+			.setName('Horizontal Move threshold(px)')
+			.setDesc('the most used')
 			.addSlider((slider) => {
 				slider
-					.setLimits(UI_CONSTANTS.MOVE_THRESHOLD_MIN, UI_CONSTANTS.MOVE_THRESHOLD_MAX, UI_CONSTANTS.MOVEMENT_SLIDER_STEP)
+					.setLimits(
+						UI_CONSTANTS.MOVE_THRESHOLD_MIN,
+						UI_CONSTANTS.MOVE_THRESHOLD_MAX,
+						UI_CONSTANTS.MOVEMENT_SLIDER_STEP
+					)
 					.setValue(this.plugin.settings.moveThresholdHor)
 					.setDynamicTooltip()
 					.onChange(async (value) => {
@@ -93,8 +95,8 @@ export class ETSSettingTab extends PluginSettingTab {
 					});
 			})
 			.addExtraButton((btn) => {
-				btn.setIcon("reset")
-					.setTooltip("Reset to default")
+				btn.setIcon('reset')
+					.setTooltip('Reset to default')
 					.onClick(async () => {
 						this.plugin.settings.moveThresholdHor =
 							DEFAULT_SETTINGS.moveThresholdHor;
@@ -104,11 +106,15 @@ export class ETSSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("Vertical Move threshold(px)")
-			.setDesc("could be used in ribbon bar, when using canvas")
+			.setName('Vertical Move threshold(px)')
+			.setDesc('could be used in ribbon bar, when using canvas')
 			.addSlider((slider) => {
 				slider
-					.setLimits(UI_CONSTANTS.MOVE_THRESHOLD_MIN, UI_CONSTANTS.MOVE_THRESHOLD_MAX, UI_CONSTANTS.MOVEMENT_SLIDER_STEP)
+					.setLimits(
+						UI_CONSTANTS.MOVE_THRESHOLD_MIN,
+						UI_CONSTANTS.MOVE_THRESHOLD_MAX,
+						UI_CONSTANTS.MOVEMENT_SLIDER_STEP
+					)
 					.setValue(this.plugin.settings.moveThresholdVert)
 					.setDynamicTooltip()
 					.onChange(async (value) => {
@@ -117,8 +123,8 @@ export class ETSSettingTab extends PluginSettingTab {
 					});
 			})
 			.addExtraButton((btn) => {
-				btn.setIcon("reset")
-					.setTooltip("Reset to default")
+				btn.setIcon('reset')
+					.setTooltip('Reset to default')
 					.onClick(async () => {
 						this.plugin.settings.moveThresholdVert =
 							DEFAULT_SETTINGS.moveThresholdVert;
@@ -128,9 +134,9 @@ export class ETSSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("Auto hide")
+			.setName('Auto hide')
 			.setDesc(
-				"Auto hide panels when clicking on the editor. Add a Ribbon icon to switch autoHide"
+				'Auto hide panels when clicking on the editor. Add a Ribbon icon to switch autoHide'
 			)
 			.addToggle((toggle) => {
 				toggle
@@ -154,9 +160,9 @@ export class ETSSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("Minimal editor width")
+			.setName('Minimal editor width')
 			.setDesc(
-				"Hide panel(s) if the proportion of the editor is less than X (threshold below) times the window size"
+				'Hide panel(s) if the proportion of the editor is less than X (threshold below) times the window size'
 			)
 			.addToggle((toggle) => {
 				toggle
@@ -168,11 +174,15 @@ export class ETSSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("Set editor min width")
-			.setDesc("min width triggering auto reduce/close sidebars")
+			.setName('Set editor min width')
+			.setDesc('min width triggering auto reduce/close sidebars')
 			.addSlider((slider) => {
 				slider
-					.setLimits(UI_CONSTANTS.MIN_EDITOR_WIDTH, UI_CONSTANTS.MAX_EDITOR_WIDTH, UI_CONSTANTS.SLIDER_STEP)
+					.setLimits(
+						UI_CONSTANTS.MIN_EDITOR_WIDTH,
+						UI_CONSTANTS.MAX_EDITOR_WIDTH,
+						UI_CONSTANTS.SLIDER_STEP
+					)
 					.setValue(this.plugin.settings.minRootWidth)
 					.setDynamicTooltip()
 					.onChange(async (value) => {
@@ -181,22 +191,25 @@ export class ETSSettingTab extends PluginSettingTab {
 					});
 			})
 			.addExtraButton((btn) => {
-				btn.setIcon("reset")
-					.setTooltip("Reset to default")
+				btn.setIcon('reset')
+					.setTooltip('Reset to default')
 					.onClick(async () => {
-						this.plugin.settings.minRootWidth =
-							DEFAULT_SETTINGS.minRootWidth;
+						this.plugin.settings.minRootWidth = DEFAULT_SETTINGS.minRootWidth;
 						await this.plugin.saveSettings();
 						this.display();
 					});
 			});
 
 		new Setting(containerEl)
-			.setName("double click delay(ms)")
-			.setDesc("max delay to trigger a double click")
+			.setName('double click delay(ms)')
+			.setDesc('max delay to trigger a double click')
 			.addSlider((slider) => {
 				slider
-					.setLimits(UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY - 250, UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY + 150, UI_CONSTANTS.SLIDER_STEP)
+					.setLimits(
+						UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY - 250,
+						UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY + 150,
+						UI_CONSTANTS.SLIDER_STEP
+					)
 					.setValue(this.plugin.settings.dblClickDelay)
 					.setDynamicTooltip()
 					.onChange(async (value) => {
@@ -205,8 +218,8 @@ export class ETSSettingTab extends PluginSettingTab {
 					});
 			})
 			.addExtraButton((btn) => {
-				btn.setIcon("reset")
-					.setTooltip("Reset to default")
+				btn.setIcon('reset')
+					.setTooltip('Reset to default')
 					.onClick(async () => {
 						this.plugin.settings.dblClickDelay =
 							DEFAULT_SETTINGS.dblClickDelay;
@@ -216,7 +229,7 @@ export class ETSSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("double click on tab headers to toggle pin")
+			.setName('double click on tab headers to toggle pin')
 			.addToggle((toggle) => {
 				toggle
 					.setValue(this.plugin.settings.togglePin)
@@ -227,14 +240,12 @@ export class ETSSettingTab extends PluginSettingTab {
 			});
 
 		new Setting(containerEl)
-			.setName("reveal file clicking on view header title")
+			.setName('reveal file clicking on view header title')
 			.addToggle((toggle) => {
-				toggle
-					.setValue(this.plugin.settings.reveal)
-					.onChange(async (value) => {
-						this.plugin.settings.reveal = value;
-						await this.plugin.saveSettings();
-					});
+				toggle.setValue(this.plugin.settings.reveal).onChange(async (value) => {
+					this.plugin.settings.reveal = value;
+					await this.plugin.saveSettings();
+				});
 			});
 	}
 }

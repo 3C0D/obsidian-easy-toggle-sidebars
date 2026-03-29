@@ -1,13 +1,13 @@
-import { Plugin, WorkspaceLeaf } from "obsidian";
-import { ETSSettingTab } from "./settings";
-import { mousedownHandler } from "./mouseDown";
-import { autoHide, autoHideON } from "./autoHide";
-import { onResize } from "./window";
-import { ETSSettings } from "./types/variables";
-import { DEFAULT_SETTINGS } from "./constants";
-import { registerCommands } from "./commands";
-import { mousemoveHandler } from "./mouseMove";
-import { mouseupHandler } from "./mouseUp";
+import { Plugin, WorkspaceLeaf } from 'obsidian';
+import { ETSSettingTab } from './settings';
+import { mousedownHandler } from './mouseDown';
+import { autoHide, autoHideON } from './autoHide';
+import { onResize } from './window';
+import { ETSSettings } from './types/variables';
+import { DEFAULT_SETTINGS } from './constants';
+import { registerCommands } from './commands';
+import { mousemoveHandler } from './mouseMove';
+import { mouseupHandler } from './mouseUp';
 
 export default class EasytoggleSidebar extends Plugin {
 	settings: ETSSettings;
@@ -38,27 +38,26 @@ export default class EasytoggleSidebar extends Plugin {
 		registerCommands(this);
 
 		if (this.settings.autoHide) {
-			this.registerDomEvent(document, "click", autoHide.bind(this));
+			this.registerDomEvent(document, 'click', autoHide.bind(this));
 		}
 
-		this.registerEvent(
-			this.app.workspace.on("resize", () => onResize(this))
-		);
+		this.registerEvent(this.app.workspace.on('resize', () => onResize(this)));
 	}
 
 	private registerDomEvents(): void {
-		this.registerDomEvent(document, "mousedown",
-			(e: MouseEvent) => mousedownHandler(this, e));
-		this.registerDomEvent(document, "mousemove", (e: MouseEvent) => mousemoveHandler(this, e));
-		this.registerDomEvent(document, "mouseup", (e: MouseEvent) => mouseupHandler(this, this.app, e));
+		this.registerDomEvent(document, 'mousedown', (e: MouseEvent) =>
+			mousedownHandler(this, e)
+		);
+		this.registerDomEvent(document, 'mousemove', (e: MouseEvent) =>
+			mousemoveHandler(this, e)
+		);
+		this.registerDomEvent(document, 'mouseup', (e: MouseEvent) =>
+			mouseupHandler(this, this.app, e)
+		);
 	}
 
 	async loadSettings() {
-		this.settings = Object.assign(
-			{},
-			DEFAULT_SETTINGS,
-			await this.loadData()
-		);
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
 	}
 
 	async saveSettings() {

@@ -1,0 +1,4 @@
+yarn run v1.22.22
+$ "C:\Users\dd200\Documents\Mes_projets\Mes repo obsidian new\obsidian-easy-toggle-sidebars\node_modules\.bin\tsc" -noEmit --skipLibCheck
+src/main.ts(6,10): error TS1484: 'ETSSettings' is a type and must be imported using a type-only import when 'verbatimModuleSyntax' is enabled.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
