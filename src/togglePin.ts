@@ -1,4 +1,4 @@
-import type { App, WorkspaceLeaf } from 'obsidian';
+import type { App, WorkspaceItem, WorkspaceLeaf } from 'obsidian';
 import { View } from 'obsidian';
 import type EasytoggleSidebar from './main.ts';
 
@@ -23,6 +23,7 @@ function getLeafProperties(
 	leaf: WorkspaceLeaf | undefined
 ): { isMainWindow: boolean; isRootSplit: boolean } {
 	const isMainWindow = leaf?.view.containerEl.win === window;
-	const isRootSplit = leaf?.getRoot() === app.workspace.rootSplit;
+	const isRootSplit =
+		leaf?.getRoot() === (app.workspace.rootSplit as unknown as WorkspaceItem);
 	return { isMainWindow, isRootSplit };
 }
