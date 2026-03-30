@@ -1,10 +1,10 @@
 {
-	"id": "easy-toggle-sidebars",
-	"name": "Easy toggle sidebars",
-	"version": "3.3.1",
-	"minAppVersion": "0.15.0",
-	"description": "toggle sidebars double-clicking middle mouse button or each sidebar clicking middle mouse button and moving mouse towards the corresponding sidebar.",
-	"author": "3C0D",
-	"authorUrl": "",
-	"isDesktopOnly": true
+  "id": "easy-toggle-sidebars",
+  "name": "Easy toggle sidebars",
+  "version": "3.3.1",
+  "minAppVersion": "0.15.0",
+  "description": "toggle sidebars double-clicking middle mouse button or each sidebar clicking middle mouse button and moving mouse towards the corresponding sidebar.",
+  "author": "3C0D",
+  "authorUrl": "",
+  "isDesktopOnly": true
 }

@@ -1,5 +1,5 @@
-import { WorkspaceSidedock, WorkspaceRoot, App } from 'obsidian';
-import EasytoggleSidebar from './main.ts';
+import type { WorkspaceSidedock, WorkspaceRoot, App } from 'obsidian';
+import type EasytoggleSidebar from './main.ts';
 
 export function getLeftSplit(app: App): WorkspaceSidedock {
 	return app.workspace.leftSplit as WorkspaceSidedock;

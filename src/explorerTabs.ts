@@ -1,5 +1,5 @@
-import { App } from 'obsidian';
-import EasytoggleSidebar from './main.ts';
+import type { App } from 'obsidian';
+import type EasytoggleSidebar from './main.ts';
 import { getActiveSidebarLeaf } from './tools.ts';
 
 /**

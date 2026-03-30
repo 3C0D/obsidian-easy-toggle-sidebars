@@ -1,6 +1,6 @@
 import { Notice } from 'obsidian';
 import { getLeftSplit, getRightSplit, toggleBothSidebars } from './barTools.ts';
-import EasytoggleSidebar from './main.ts';
+import type EasytoggleSidebar from './main.ts';
 import { ZoneDetector } from './utils/domUtils.ts';
 import { UI_CONSTANTS } from './constants/index.ts';
 

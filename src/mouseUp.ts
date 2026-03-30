@@ -1,8 +1,8 @@
-import { App } from 'obsidian';
+import type { App } from 'obsidian';
 import { autoHide } from './autoHide.ts';
 import { toggleBothSidebars, getLeftSplit, getRightSplit } from './barTools.ts';
 import { goToExplorerTab } from './explorerTabs.ts';
-import EasytoggleSidebar from './main.ts';
+import type EasytoggleSidebar from './main.ts';
 import { reveal } from './reveal.ts';
 import { handleEditorEdgeClick } from './scrollBar.ts';
 import { togglePin } from './togglePin.ts';

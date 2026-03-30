@@ -1,5 +1,5 @@
-import { App, WorkspaceLeaf } from 'obsidian';
-import EasytoggleSidebar from './main.ts';
+import type { App, WorkspaceLeaf } from 'obsidian';
+import type EasytoggleSidebar from './main.ts';
 import { getLeftSplit } from './barTools.ts';
 import { UI_CONSTANTS } from './constants/index.ts';
 

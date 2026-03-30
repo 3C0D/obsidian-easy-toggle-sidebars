@@ -1,4 +1,4 @@
-import { App } from 'obsidian';
+import type { App } from 'obsidian';
 
 export function reveal(app: App, e: MouseEvent): void {
 	const target = e.target as HTMLElement;

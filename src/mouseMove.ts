@@ -1,5 +1,5 @@
 import { getLeftSplit, getRightSplit, toggleIf } from './barTools.ts';
-import EasytoggleSidebar from './main.ts';
+import type EasytoggleSidebar from './main.ts';
 import { contextmenuListener } from './tools.ts';
 
 export function mousemoveHandler(plugin: EasytoggleSidebar, e: MouseEvent): void {

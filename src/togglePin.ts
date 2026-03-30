@@ -1,5 +1,6 @@
-import { App, View, WorkspaceLeaf } from 'obsidian';
-import EasytoggleSidebar from './main.ts';
+import type { App, WorkspaceLeaf } from 'obsidian';
+import { View } from 'obsidian';
+import type EasytoggleSidebar from './main.ts';
 
 export async function togglePin(
 	app: App,

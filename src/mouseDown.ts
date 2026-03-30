@@ -1,4 +1,4 @@
-import EasytoggleSidebar from './main.ts';
+import type EasytoggleSidebar from './main.ts';
 
 export function mousedownHandler(plugin: EasytoggleSidebar, e: MouseEvent): void {
 	plugin.button = e.button;

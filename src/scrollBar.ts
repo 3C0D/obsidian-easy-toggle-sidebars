@@ -1,5 +1,5 @@
 import { getLeftSplit, getRightSplit } from './barTools.ts';
-import EasytoggleSidebar from './main.ts';
+import type EasytoggleSidebar from './main.ts';
 
 function getEdgeFromClick(event: MouseEvent, isScroller: Element): string | null {
 	const rect = isScroller.getBoundingClientRect();

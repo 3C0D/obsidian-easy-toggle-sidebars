@@ -1,9 +1,10 @@
-import { Plugin, WorkspaceLeaf } from 'obsidian';
+import type { WorkspaceLeaf } from 'obsidian';
+import { Plugin } from 'obsidian';
 import { ETSSettingTab } from './settings.ts';
 import { mousedownHandler } from './mouseDown.ts';
 import { autoHide, autoHideON } from './autoHide.ts';
 import { onResize } from './window.ts';
-import type{ ETSSettings } from './types/variables.ts';
+import type { ETSSettings } from './types/variables.ts';
 import { DEFAULT_SETTINGS } from './constants/index.ts';
 import { registerCommands } from './commands.ts';
 import { mousemoveHandler } from './mouseMove.ts';

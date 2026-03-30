@@ -1,5 +1,6 @@
-import { App, PluginSettingTab, Setting } from 'obsidian';
-import EasytoggleSidebar from './main.ts';
+import type { App } from 'obsidian';
+import { PluginSettingTab, Setting } from 'obsidian';
+import type EasytoggleSidebar from './main.ts';
 import { toggleAutoHideEvent, toggleColor, autoHideON } from './autoHide.ts';
 import { DEFAULT_SETTINGS, UI_CONSTANTS } from './constants/index.ts';
 

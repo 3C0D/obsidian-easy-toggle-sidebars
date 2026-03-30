@@ -1,4 +1,4 @@
-import { WorkspaceSidedock } from 'obsidian';
+import type { WorkspaceSidedock } from 'obsidian';
 import {
 	getLeftSplit,
 	getRightSplit,
@@ -6,7 +6,7 @@ import {
 	isOpen,
 	toggleBothSidebars
 } from './barTools.ts';
-import EasytoggleSidebar from './main.ts';
+import type EasytoggleSidebar from './main.ts';
 import { UI_CONSTANTS } from './constants/index.ts';
 
 export function onResize(plugin: EasytoggleSidebar): void {
