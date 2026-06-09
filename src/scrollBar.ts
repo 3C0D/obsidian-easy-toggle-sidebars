@@ -2,24 +2,24 @@ import { getLeftSplit, getRightSplit } from './barTools.ts';
 import type EasytoggleSidebar from './main.ts';
 
 function getEdgeFromClick(event: MouseEvent, isScroller: Element): string | null {
-	const rect = isScroller.getBoundingClientRect();
-	const offsetX = event.clientX - rect.left;
+  const rect = isScroller.getBoundingClientRect();
+  const offsetX = event.clientX - rect.left;
 
-	if (offsetX > rect.width - 40) return 'right';
-	if (offsetX < 40) return 'left';
+  if (offsetX > rect.width - 40) return 'right';
+  if (offsetX < 40) return 'left';
 
-	return null;
+  return null;
 }
 
 export function handleEditorEdgeClick(e: MouseEvent, plugin: EasytoggleSidebar): void {
-	const target = e.target as HTMLElement;
-	const isScroller = target.closest('.cm-scroller');
-	if (!isScroller) return;
-	const edge = getEdgeFromClick(e, isScroller);
-	if (!edge) return;
-	if (edge === 'right') {
-		getRightSplit(plugin.app).toggle();
-	} else if (edge === 'left') {
-		getLeftSplit(plugin.app).toggle();
-	}
+  const target = e.target as HTMLElement;
+  const isScroller = target.closest('.cm-scroller');
+  if (!isScroller) return;
+  const edge = getEdgeFromClick(e, isScroller);
+  if (!edge) return;
+  if (edge === 'right') {
+    getRightSplit(plugin.app).toggle();
+  } else if (edge === 'left') {
+    getLeftSplit(plugin.app).toggle();
+  }
 }

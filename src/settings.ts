@@ -5,17 +5,17 @@ import { toggleAutoHideEvent, toggleColor, autoHideON } from './autoHide.ts';
 import { DEFAULT_SETTINGS, UI_CONSTANTS } from './constants/index.ts';
 
 export class ETSSettingTab extends PluginSettingTab {
-	plugin: EasytoggleSidebar;
+  plugin: EasytoggleSidebar;
 
-	constructor(app: App, plugin: EasytoggleSidebar) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
+  constructor(app: App, plugin: EasytoggleSidebar) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
 
-	display(): void {
-		const { containerEl } = this;
-		containerEl.empty();
-		const content = `
+  display(): void {
+    const { containerEl } = this;
+    containerEl.empty();
+    const content = `
 		<br>
 		<b>Right/Middle Mouse Click Usage:</b>
 		<ul>
@@ -48,205 +48,198 @@ export class ETSSettingTab extends PluginSettingTab {
 			<li><b>Double-Click Delay:</b> You can customize the delay for double-click actions in settings.</li>
 		</ul>		
 		`;
-		const fragment = createFragment((el) => {
-			el.createEl('div').innerHTML = content;
-		});
+    const fragment = createFragment((el) => {
+      el.createEl('div').innerHTML = content;
+    });
 
-		containerEl.createDiv('', (el: HTMLDivElement) => {
-			el.appendChild(fragment);
-		});
+    containerEl.createDiv('', (el: HTMLDivElement) => {
+      el.appendChild(fragment);
+    });
 
-		new Setting(containerEl)
-			.setName('Right Mouse')
-			.setDesc('Activates Right Mouse to trigger operations')
-			.addToggle((toggle) => {
-				toggle.setValue(this.plugin.settings.useRightMouse).onChange((value) => {
-					this.plugin.settings.useRightMouse = value;
-					this.plugin.saveSettings();
-				});
-			});
+    new Setting(containerEl)
+      .setName('Right Mouse')
+      .setDesc('Activates Right Mouse to trigger operations')
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.useRightMouse).onChange((value) => {
+          this.plugin.settings.useRightMouse = value;
+          this.plugin.saveSettings();
+        });
+      });
 
-		new Setting(containerEl)
-			.setName('Middle Mouse')
-			.setDesc('Activates Middle Mouse to trigger operations')
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.plugin.settings.useMiddleMouse)
-					.onChange(async (value) => {
-						this.plugin.settings.useMiddleMouse = value;
-						await this.plugin.saveSettings();
-					});
-			});
+    new Setting(containerEl)
+      .setName('Middle Mouse')
+      .setDesc('Activates Middle Mouse to trigger operations')
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.useMiddleMouse).onChange(async (value) => {
+          this.plugin.settings.useMiddleMouse = value;
+          await this.plugin.saveSettings();
+        });
+      });
 
-		new Setting(containerEl)
-			.setName('Horizontal Move threshold(px)')
-			.setDesc('the most used')
-			.addSlider((slider) => {
-				slider
-					.setLimits(
-						UI_CONSTANTS.MOVE_THRESHOLD_MIN,
-						UI_CONSTANTS.MOVE_THRESHOLD_MAX,
-						UI_CONSTANTS.MOVEMENT_SLIDER_STEP
-					)
-					.setValue(this.plugin.settings.moveThresholdHor)
-					.setDynamicTooltip()
-					.onChange(async (value) => {
-						this.plugin.settings.moveThresholdHor = value;
-						await this.plugin.saveSettings();
-					});
-			})
-			.addExtraButton((btn) => {
-				btn.setIcon('reset')
-					.setTooltip('Reset to default')
-					.onClick(async () => {
-						this.plugin.settings.moveThresholdHor =
-							DEFAULT_SETTINGS.moveThresholdHor;
-						await this.plugin.saveSettings();
-						this.display();
-					});
-			});
+    new Setting(containerEl)
+      .setName('Horizontal Move threshold(px)')
+      .setDesc('the most used')
+      .addSlider((slider) => {
+        slider
+          .setLimits(
+            UI_CONSTANTS.MOVE_THRESHOLD_MIN,
+            UI_CONSTANTS.MOVE_THRESHOLD_MAX,
+            UI_CONSTANTS.MOVEMENT_SLIDER_STEP
+          )
+          .setValue(this.plugin.settings.moveThresholdHor)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.moveThresholdHor = value;
+            await this.plugin.saveSettings();
+          });
+      })
+      .addExtraButton((btn) => {
+        btn
+          .setIcon('reset')
+          .setTooltip('Reset to default')
+          .onClick(async () => {
+            this.plugin.settings.moveThresholdHor = DEFAULT_SETTINGS.moveThresholdHor;
+            await this.plugin.saveSettings();
+            this.display();
+          });
+      });
 
-		new Setting(containerEl)
-			.setName('Vertical Move threshold(px)')
-			.setDesc('could be used in ribbon bar, when using canvas')
-			.addSlider((slider) => {
-				slider
-					.setLimits(
-						UI_CONSTANTS.MOVE_THRESHOLD_MIN,
-						UI_CONSTANTS.MOVE_THRESHOLD_MAX,
-						UI_CONSTANTS.MOVEMENT_SLIDER_STEP
-					)
-					.setValue(this.plugin.settings.moveThresholdVert)
-					.setDynamicTooltip()
-					.onChange(async (value) => {
-						this.plugin.settings.moveThresholdVert = value;
-						await this.plugin.saveSettings();
-					});
-			})
-			.addExtraButton((btn) => {
-				btn.setIcon('reset')
-					.setTooltip('Reset to default')
-					.onClick(async () => {
-						this.plugin.settings.moveThresholdVert =
-							DEFAULT_SETTINGS.moveThresholdVert;
-						await this.plugin.saveSettings();
-						this.display();
-					});
-			});
+    new Setting(containerEl)
+      .setName('Vertical Move threshold(px)')
+      .setDesc('could be used in ribbon bar, when using canvas')
+      .addSlider((slider) => {
+        slider
+          .setLimits(
+            UI_CONSTANTS.MOVE_THRESHOLD_MIN,
+            UI_CONSTANTS.MOVE_THRESHOLD_MAX,
+            UI_CONSTANTS.MOVEMENT_SLIDER_STEP
+          )
+          .setValue(this.plugin.settings.moveThresholdVert)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.moveThresholdVert = value;
+            await this.plugin.saveSettings();
+          });
+      })
+      .addExtraButton((btn) => {
+        btn
+          .setIcon('reset')
+          .setTooltip('Reset to default')
+          .onClick(async () => {
+            this.plugin.settings.moveThresholdVert = DEFAULT_SETTINGS.moveThresholdVert;
+            await this.plugin.saveSettings();
+            this.display();
+          });
+      });
 
-		new Setting(containerEl)
-			.setName('Auto hide')
-			.setDesc(
-				'Auto hide panels when clicking on the editor. Add a Ribbon icon to switch autoHide'
-			)
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.plugin.settings.autoHideRibbon)
-					.onChange(async (value) => {
-						this.plugin.settings.autoHideRibbon = value;
-						if (this.plugin.settings.autoHideRibbon) {
-							this.plugin.settings.autoHide = true;
-							toggleAutoHideEvent(this.plugin);
-							toggleColor(this.plugin);
-							autoHideON(this.plugin);
-						} else {
-							this.plugin.ribbonIconEl?.remove();
-							this.plugin.ribbonIconEl = null;
-							this.plugin.settings.autoHide = false;
-							toggleAutoHideEvent(this.plugin);
-							toggleColor(this.plugin);
-						}
-						await this.plugin.saveSettings();
-					});
-			});
+    new Setting(containerEl)
+      .setName('Auto hide')
+      .setDesc(
+        'Auto hide panels when clicking on the editor. Add a Ribbon icon to switch autoHide'
+      )
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.autoHideRibbon).onChange(async (value) => {
+          this.plugin.settings.autoHideRibbon = value;
+          if (this.plugin.settings.autoHideRibbon) {
+            this.plugin.settings.autoHide = true;
+            toggleAutoHideEvent(this.plugin);
+            toggleColor(this.plugin);
+            autoHideON(this.plugin);
+          } else {
+            this.plugin.ribbonIconEl?.remove();
+            this.plugin.ribbonIconEl = null;
+            this.plugin.settings.autoHide = false;
+            toggleAutoHideEvent(this.plugin);
+            toggleColor(this.plugin);
+          }
+          await this.plugin.saveSettings();
+        });
+      });
 
-		new Setting(containerEl)
-			.setName('Minimal editor width')
-			.setDesc(
-				'Hide panel(s) if the proportion of the editor is less than X (threshold below) times the window size'
-			)
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.plugin.settings.autoMinRootWidth)
-					.onChange(async (value) => {
-						this.plugin.settings.autoMinRootWidth = value;
-						await this.plugin.saveSettings();
-					});
-			});
+    new Setting(containerEl)
+      .setName('Minimal editor width')
+      .setDesc(
+        'Hide panel(s) if the proportion of the editor is less than X (threshold below) times the window size'
+      )
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.autoMinRootWidth).onChange(async (value) => {
+          this.plugin.settings.autoMinRootWidth = value;
+          await this.plugin.saveSettings();
+        });
+      });
 
-		new Setting(containerEl)
-			.setName('Set editor min width')
-			.setDesc('min width triggering auto reduce/close sidebars')
-			.addSlider((slider) => {
-				slider
-					.setLimits(
-						UI_CONSTANTS.MIN_EDITOR_WIDTH,
-						UI_CONSTANTS.MAX_EDITOR_WIDTH,
-						UI_CONSTANTS.SLIDER_STEP
-					)
-					.setValue(this.plugin.settings.minRootWidth)
-					.setDynamicTooltip()
-					.onChange(async (value) => {
-						this.plugin.settings.minRootWidth = value;
-						await this.plugin.saveSettings();
-					});
-			})
-			.addExtraButton((btn) => {
-				btn.setIcon('reset')
-					.setTooltip('Reset to default')
-					.onClick(async () => {
-						this.plugin.settings.minRootWidth = DEFAULT_SETTINGS.minRootWidth;
-						await this.plugin.saveSettings();
-						this.display();
-					});
-			});
+    new Setting(containerEl)
+      .setName('Set editor min width')
+      .setDesc('min width triggering auto reduce/close sidebars')
+      .addSlider((slider) => {
+        slider
+          .setLimits(
+            UI_CONSTANTS.MIN_EDITOR_WIDTH,
+            UI_CONSTANTS.MAX_EDITOR_WIDTH,
+            UI_CONSTANTS.SLIDER_STEP
+          )
+          .setValue(this.plugin.settings.minRootWidth)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.minRootWidth = value;
+            await this.plugin.saveSettings();
+          });
+      })
+      .addExtraButton((btn) => {
+        btn
+          .setIcon('reset')
+          .setTooltip('Reset to default')
+          .onClick(async () => {
+            this.plugin.settings.minRootWidth = DEFAULT_SETTINGS.minRootWidth;
+            await this.plugin.saveSettings();
+            this.display();
+          });
+      });
 
-		new Setting(containerEl)
-			.setName('double click delay(ms)')
-			.setDesc('max delay to trigger a double click')
-			.addSlider((slider) => {
-				slider
-					.setLimits(
-						UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY - 250,
-						UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY + 150,
-						UI_CONSTANTS.SLIDER_STEP
-					)
-					.setValue(this.plugin.settings.dblClickDelay)
-					.setDynamicTooltip()
-					.onChange(async (value) => {
-						this.plugin.settings.dblClickDelay = value;
-						await this.plugin.saveSettings();
-					});
-			})
-			.addExtraButton((btn) => {
-				btn.setIcon('reset')
-					.setTooltip('Reset to default')
-					.onClick(async () => {
-						this.plugin.settings.dblClickDelay =
-							DEFAULT_SETTINGS.dblClickDelay;
-						await this.plugin.saveSettings();
-						this.display();
-					});
-			});
+    new Setting(containerEl)
+      .setName('double click delay(ms)')
+      .setDesc('max delay to trigger a double click')
+      .addSlider((slider) => {
+        slider
+          .setLimits(
+            UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY - 250,
+            UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY + 150,
+            UI_CONSTANTS.SLIDER_STEP
+          )
+          .setValue(this.plugin.settings.dblClickDelay)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.dblClickDelay = value;
+            await this.plugin.saveSettings();
+          });
+      })
+      .addExtraButton((btn) => {
+        btn
+          .setIcon('reset')
+          .setTooltip('Reset to default')
+          .onClick(async () => {
+            this.plugin.settings.dblClickDelay = DEFAULT_SETTINGS.dblClickDelay;
+            await this.plugin.saveSettings();
+            this.display();
+          });
+      });
 
-		new Setting(containerEl)
-			.setName('double click on tab headers to toggle pin')
-			.addToggle((toggle) => {
-				toggle
-					.setValue(this.plugin.settings.togglePin)
-					.onChange(async (value) => {
-						this.plugin.settings.togglePin = value;
-						await this.plugin.saveSettings();
-					});
-			});
+    new Setting(containerEl)
+      .setName('double click on tab headers to toggle pin')
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.togglePin).onChange(async (value) => {
+          this.plugin.settings.togglePin = value;
+          await this.plugin.saveSettings();
+        });
+      });
 
-		new Setting(containerEl)
-			.setName('reveal file clicking on view header title')
-			.addToggle((toggle) => {
-				toggle.setValue(this.plugin.settings.reveal).onChange(async (value) => {
-					this.plugin.settings.reveal = value;
-					await this.plugin.saveSettings();
-				});
-			});
-	}
+    new Setting(containerEl)
+      .setName('reveal file clicking on view header title')
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.reveal).onChange(async (value) => {
+          this.plugin.settings.reveal = value;
+          await this.plugin.saveSettings();
+        });
+      });
+  }
 }

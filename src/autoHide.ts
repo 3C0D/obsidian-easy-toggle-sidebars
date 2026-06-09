@@ -5,67 +5,67 @@ import { ZoneDetector } from './utils/domUtils.ts';
 import { UI_CONSTANTS } from './constants/index.ts';
 
 export function autoHideON(plugin: EasytoggleSidebar): void {
-	const { settings } = plugin;
-	plugin.ribbonIconEl = plugin.addRibbonIcon(
-		'move-horizontal',
-		'autoHide switcher',
-		async () => {
-			settings.autoHide = !settings.autoHide;
-			await plugin.saveSettings();
-			toggleColor(plugin);
-			toggleAutoHideEvent(plugin);
-			new Notice(
-				settings.autoHide ? 'AutoHide Enabled' : 'AutoHide Disabled',
-				UI_CONSTANTS.NOTICE_DURATION
-			);
-		}
-	);
-	toggleColor(plugin);
+  const { settings } = plugin;
+  plugin.ribbonIconEl = plugin.addRibbonIcon(
+    'move-horizontal',
+    'autoHide switcher',
+    async () => {
+      settings.autoHide = !settings.autoHide;
+      await plugin.saveSettings();
+      toggleColor(plugin);
+      toggleAutoHideEvent(plugin);
+      new Notice(
+        settings.autoHide ? 'AutoHide Enabled' : 'AutoHide Disabled',
+        UI_CONSTANTS.NOTICE_DURATION
+      );
+    }
+  );
+  toggleColor(plugin);
 }
 
 export function toggleColor(plugin: EasytoggleSidebar): void {
-	plugin.settings.autoHide
-		? plugin.ribbonIconEl?.addClass('ribbon-color')
-		: plugin.ribbonIconEl?.removeClass('ribbon-color');
+  plugin.settings.autoHide
+    ? plugin.ribbonIconEl?.addClass('ribbon-color')
+    : plugin.ribbonIconEl?.removeClass('ribbon-color');
 }
 
 export function toggleAutoHideEvent(plugin: EasytoggleSidebar): void {
-	if (plugin.settings.autoHide) {
-		plugin.registerDomEvent(document, 'click', autoHide.bind(plugin));
-	} else {
-		document.removeEventListener('click', autoHide.bind(plugin));
-	}
+  if (plugin.settings.autoHide) {
+    plugin.registerDomEvent(document, 'click', autoHide.bind(plugin));
+  } else {
+    document.removeEventListener('click', autoHide.bind(plugin));
+  }
 }
 
 export async function toggleAutoHide(plugin: EasytoggleSidebar): Promise<void> {
-	const { settings } = plugin;
-	settings.autoHide = !settings.autoHide;
-	await plugin.saveSettings();
-	toggleColor(plugin);
-	toggleAutoHideEvent(plugin);
-	new Notice(
-		settings.autoHide ? 'AutoHide Enabled' : 'AutoHide Disabled',
-		UI_CONSTANTS.NOTICE_DURATION
-	);
+  const { settings } = plugin;
+  settings.autoHide = !settings.autoHide;
+  await plugin.saveSettings();
+  toggleColor(plugin);
+  toggleAutoHideEvent(plugin);
+  new Notice(
+    settings.autoHide ? 'AutoHide Enabled' : 'AutoHide Disabled',
+    UI_CONSTANTS.NOTICE_DURATION
+  );
 }
 
 export function autoHide(this: EasytoggleSidebar, evt: MouseEvent): void {
-	if (!this.settings.autoHide) return;
-	const element = evt.target as HTMLElement;
+  if (!this.settings.autoHide) return;
+  const element = evt.target as HTMLElement;
 
-	if (!ZoneDetector.isEditorContent(element)) return;
+  if (!ZoneDetector.isEditorContent(element)) return;
 
-	// Check if clicking on reveal zones
-	if (ZoneDetector.isRevealZone(element)) return;
+  // Check if clicking on reveal zones
+  if (ZoneDetector.isRevealZone(element)) return;
 
-	// Check if in double-click zones on edges
-	if (ZoneDetector.isDoubleClickZone(element, evt)) {
-		return; // Don't trigger autoHide in double-click zones
-	}
+  // Check if in double-click zones on edges
+  if (ZoneDetector.isDoubleClickZone(element, evt)) {
+    return; // Don't trigger autoHide in double-click zones
+  }
 
-	// All collapsed
-	const leftSplit = getLeftSplit(this.app);
-	const rightSplit = getRightSplit(this.app);
-	if (leftSplit.collapsed && rightSplit.collapsed) return;
-	toggleBothSidebars(this);
+  // All collapsed
+  const leftSplit = getLeftSplit(this.app);
+  const rightSplit = getRightSplit(this.app);
+  if (leftSplit.collapsed && rightSplit.collapsed) return;
+  toggleBothSidebars(this);
 }
