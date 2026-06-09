@@ -49,7 +49,7 @@ export async function toggleAutoHide(plugin: EasytoggleSidebar): Promise<void> {
 	);
 }
 
-export function autoHide(evt: MouseEvent): void {
+export function autoHide(this: EasytoggleSidebar, evt: MouseEvent): void {
 	if (!this.settings.autoHide) return;
 	const element = evt.target as HTMLElement;
 

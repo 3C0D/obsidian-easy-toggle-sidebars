@@ -11,7 +11,7 @@ import { mousemoveHandler } from './mouseMove.ts';
 import { mouseupHandler } from './mouseUp.ts';
 
 export default class EasytoggleSidebar extends Plugin {
-	settings: ETSSettings;
+	settings!: ETSSettings;
 	ribbonIconEl: HTMLElement | null = null;
 	startX = 0;
 	startY = 0;
@@ -25,9 +25,10 @@ export default class EasytoggleSidebar extends Plugin {
 	preventContextmenu: NodeJS.Timeout | null = null;
 	doubleClickTimeout: NodeJS.Timeout | null = null;
 	clicked = 0;
-	previousActiveSplitLeaf: WorkspaceLeaf | null;
+	previousActiveSplitLeaf!: WorkspaceLeaf | null;
 
 	async onload(): Promise<void> {
+		console.log('Loading Easy Toggle Sidebars plugin');
 		await this.loadSettings();
 		this.addSettingTab(new ETSSettingTab(this.app, this));
 		if (this.settings.autoHideRibbon) autoHideON(this);

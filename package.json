@@ -18,15 +18,15 @@
     "h": "tsx scripts/help.ts",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "prettier": "npx prettier --check '**/*.{ts,json}'",
-    "prettier:fix": "npx prettier --write '**/*.{ts,json}'"
+    "prettier": "prettier --check '**/*.{ts,json}'",
+    "prettier:fix": "prettier --write '**/*.{ts,json}'"
   },
   "keywords": [],
   "author": "3C0D",
   "license": "MIT",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "latest",
+    "@types/node": "^25.9.2",
     "@types/semver": "latest",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
@@ -40,7 +40,7 @@
     "obsidian-typings": "latest",
     "semver": "latest",
     "tslib": "2.4.0",
-    "tsx": "latest",
+    "tsx": "^4.21.0",
     "typescript": "^5.8.2",
     "@types/eslint": "latest",
     "eslint": "latest",

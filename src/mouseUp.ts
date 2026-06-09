@@ -38,7 +38,11 @@ export async function mouseupHandler(
 				autoHide.bind(plugin)(evt);
 			}
 			if (plugin.settings.reveal) {
+				try {
 				reveal(app, evt);
+				} catch (error) {
+					console.warn('Could not perform reveal action:', error);
+				}
 			}
 		}
 	} else if (evt.detail === 2) {
