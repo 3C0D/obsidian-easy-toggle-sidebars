@@ -57,11 +57,8 @@ export class ZoneDetector {
    * Check if element is in the editor content zone
    */
   static isEditorContent(element: HTMLElement): boolean {
-    const isBody = element.closest(CSS_SELECTORS.CM_CONTENT);
-    const isLine = element.closest(CSS_SELECTORS.CM_LINE);
-    const isLink = element.closest(CSS_SELECTORS.CM_UNDERLINE);
-    const isRoot = element.closest(CSS_SELECTORS.MOD_ROOT);
-    return !!(isRoot || isBody || isLine || isLink);
+    const isContentContainer = element.closest(CSS_SELECTORS.CM_CONTENT_CONTAINER);
+    return !!isContentContainer;
   }
 
   /**
@@ -72,21 +69,3 @@ export class ZoneDetector {
   }
 }
 
-/**
- * Utilities for type validation
- */
-export class TypeGuards {
-  /**
-   * Check if an element is an HTMLElement
-   */
-  static isHTMLElement(element: unknown): element is HTMLElement {
-    return element instanceof HTMLElement;
-  }
-
-  /**
-   * Safely cast an element to HTMLElement
-   */
-  static safeCastToHTMLElement(element: unknown): HTMLElement | null {
-    return TypeGuards.isHTMLElement(element) ? element : null;
-  }
-}

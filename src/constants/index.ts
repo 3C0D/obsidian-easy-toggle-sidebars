@@ -14,9 +14,7 @@ export const UI_CONSTANTS = {
 } as const;
 
 export const CSS_SELECTORS = {
-  CM_CONTENT: '.cm-content',
-  CM_LINE: '.cm-line',
-  CM_UNDERLINE: '.cm-underline',
+  CM_CONTENT_CONTAINER: '.cm-contentContainer',
   MOD_ROOT: '.mod-root',
   CM_SCROLLER: '.cm-scroller',
   WORKSPACE_RIBBON: '.workspace-ribbon',
