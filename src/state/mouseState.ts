@@ -1,5 +1,3 @@
-import type { WorkspaceLeaf } from 'obsidian';
-
 /**
  * Encapsulates all mouse / gesture related mutable state used by the plugin.
  * Keeping this in a dedicated class avoids polluting the main plugin class
@@ -17,5 +15,4 @@ export class MouseState {
   target: HTMLElement | null = null;
   preventContextmenu: NodeJS.Timeout | null = null;
   doubleClickTimeout: NodeJS.Timeout | null = null;
-  previousActiveSplitLeaf: WorkspaceLeaf | null = null;
 }

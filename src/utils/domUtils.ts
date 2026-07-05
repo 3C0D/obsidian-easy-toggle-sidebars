@@ -54,13 +54,6 @@ export class ZoneDetector {
   }
 
   /**
-   * Check if element is in the left split zone
-   */
-  static isLeftSplitZone(element: HTMLElement): boolean {
-    return !!element.closest(CSS_SELECTORS.MOD_LEFT_SPLIT);
-  }
-
-  /**
    * Check if element is in the editor content zone
    */
   static isEditorContent(element: HTMLElement): boolean {

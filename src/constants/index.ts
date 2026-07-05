@@ -23,7 +23,6 @@ export const CSS_SELECTORS = {
   MOD_ROOT_VIEW_CONTENT: '.mod-root .view-content',
   VIEW_HEADER_TITLE_CONTAINER: '.view-header-title-container',
   VIEW_HEADER_TITLE: '.view-header-title',
-  MOD_LEFT_SPLIT: '.mod-left-split',
   WORKSPACE_TAB_HEADER_INNER_TITLE: '.workspace-tab-header-inner-title'
 } as const;
 

@@ -1,6 +1,5 @@
 import type { App } from 'obsidian';
 import { toggleBothSidebars, getLeftSplit, getRightSplit } from './barTools.ts';
-import { goToExplorerTab } from './explorerTabs.ts';
 import type EasytoggleSidebar from './main.ts';
 import { reveal } from './reveal.ts';
 import { handleEditorEdgeClick } from './scrollBar.ts';
@@ -87,13 +86,10 @@ export async function mouseupHandler(
 
     const target = evt.target as HTMLElement;
     const isRibbon = ZoneDetector.isRibbonZone(target);
-    const isLeftSplit = ZoneDetector.isLeftSplitZone(target);
 
     if (isRibbon) {
       getRightSplit(plugin.app).toggle();
       return;
-    } else if (isLeftSplit) {
-      await goToExplorerTab(plugin, app, evt);
     }
   }
 }

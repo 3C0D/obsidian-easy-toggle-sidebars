@@ -28,8 +28,7 @@ export class ETSSettingTab extends PluginSettingTab {
 		<li><b>Double/Triple click on the ribbon bar:</b> Toggles the left/right sidebar (especially useful in canvas mode). </li>
 		<li><b>Double click on the left/right edges of the editor to toggle the left/right sidebar.</li>
 		<li><b>Click on the view header title or around it:</b> Reveals the active file in the file explorer.</li>
-		<li><b>Double click on the tab header:</b> Toggles the tab pinning.</li>
-		<li>Tips: Triple click in the left sidebar to switch between active tab and explorer tab.</li>
+		<li><b>Double click on the tab header:</b> Toggles the tab pinning (works in any window and view type).</li>
 		</ul>
 
 		<br>

@@ -22,24 +22,42 @@ export default class EasytoggleSidebar extends Plugin {
   }
 
   private onLayoutReady(): void {
-    this.registerDomEvents();
-    registerCommands(this);
+    // Register on the main window's document.
+    this.registerDomEvents(document);
 
-    this.registerDomEvent(document, 'click', autoHide.bind(this));
+    // Register on any already-open popout windows and on windows opened later,
+    // so gestures and Toggle Pin work in secondary windows too. Leaves inside
+    // the same popout share a single document, so dedupe before registering.
+    const registeredDocs = new Set<Document>([document]);
+    this.app.workspace.iterateAllLeaves((leaf) => {
+      const doc = leaf.getContainer().doc;
+      if (!registeredDocs.has(doc)) {
+        registeredDocs.add(doc);
+        this.registerDomEvents(doc);
+      }
+    });
+    this.registerEvent(
+      this.app.workspace.on('window-open', (_workspaceWin, win) =>
+        this.registerDomEvents(win.document)
+      )
+    );
+
+    registerCommands(this);
 
     this.registerEvent(this.app.workspace.on('resize', () => onResize(this)));
   }
 
-  private registerDomEvents(): void {
-    this.registerDomEvent(document, 'mousedown', (e: MouseEvent) =>
+  private registerDomEvents(doc: Document): void {
+    this.registerDomEvent(doc, 'mousedown', (e: MouseEvent) =>
       mousedownHandler(this, e)
     );
-    this.registerDomEvent(document, 'mousemove', (e: MouseEvent) =>
+    this.registerDomEvent(doc, 'mousemove', (e: MouseEvent) =>
       mousemoveHandler(this, e)
     );
-    this.registerDomEvent(document, 'mouseup', (e: MouseEvent) =>
+    this.registerDomEvent(doc, 'mouseup', (e: MouseEvent) =>
       mouseupHandler(this, this.app, e)
     );
+    this.registerDomEvent(doc, 'click', autoHide.bind(this));
   }
 
   async loadSettings(): Promise<void> {
