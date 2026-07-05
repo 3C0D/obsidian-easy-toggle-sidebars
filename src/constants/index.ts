@@ -10,7 +10,10 @@ export const UI_CONSTANTS = {
   SIDEBAR_MIN_SIZE: 200,
   CONTEXTMENU_TIMEOUT: 20,
   RIBBON_TOGGLE_DELAY: 300,
-  NOTICE_DURATION: 2000
+  NOTICE_DURATION: 2000,
+  TRACKPAD_THRESHOLD_MIN: 30,
+  TRACKPAD_THRESHOLD_MAX: 200,
+  TRACKPAD_RESET_DELAY: 150
 } as const;
 
 export const CSS_SELECTORS = {
@@ -35,5 +38,8 @@ export const DEFAULT_SETTINGS = {
   minRootWidth: 300,
   dblClickDelay: UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY,
   togglePin: true,
-  reveal: true
+  reveal: true,
+  useTrackpadSwipe: true,
+  invertTrackpadSwipe: false,
+  trackpadThreshold: 80
 } as const;

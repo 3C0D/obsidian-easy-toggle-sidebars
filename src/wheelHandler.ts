@@ -1,0 +1,37 @@
+import { getLeftSplit, getRightSplit, toggleIf } from './barTools.ts';
+import type EasytoggleSidebar from './main.ts';
+import { UI_CONSTANTS } from './constants/index.ts';
+
+export function wheelHandler(plugin: EasytoggleSidebar, e: WheelEvent): void {
+  const { mouse, wheel, settings } = plugin;
+
+  if (!settings.useTrackpadSwipe) return;
+  // Avoid conflicting with an ongoing right/middle mouse click-and-move gesture
+  if (mouse.isTracking) return;
+
+  const deltaX = settings.invertTrackpadSwipe ? -e.deltaX : e.deltaX;
+  const deltaY = settings.invertTrackpadSwipe ? -e.deltaY : e.deltaY;
+
+  wheel.accumulatedX += deltaX;
+  wheel.accumulatedY += deltaY;
+
+  if (!wheel.triggered) {
+    if (Math.abs(wheel.accumulatedX) > settings.trackpadThreshold) {
+      toggleIf(wheel.accumulatedX < 0 ? getLeftSplit(plugin.app) : getRightSplit(plugin.app));
+      wheel.triggered = true;
+    } else if (Math.abs(wheel.accumulatedY) > settings.trackpadThreshold) {
+      toggleIf(wheel.accumulatedY < 0 ? getLeftSplit(plugin.app) : getRightSplit(plugin.app));
+      wheel.triggered = true;
+    }
+  }
+
+  // Reset accumulation once no 'wheel' event has fired for a short delay,
+  // which marks the end of the swipe burst.
+  if (wheel.resetTimeout) clearTimeout(wheel.resetTimeout);
+  wheel.resetTimeout = setTimeout(() => {
+    wheel.accumulatedX = 0;
+    wheel.accumulatedY = 0;
+    wheel.triggered = false;
+    wheel.resetTimeout = null;
+  }, UI_CONSTANTS.TRACKPAD_RESET_DELAY);
+}

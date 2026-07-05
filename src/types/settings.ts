@@ -10,4 +10,7 @@ export interface ETSSettings {
   dblClickDelay: number;
   togglePin: boolean;
   reveal: boolean;
+  useTrackpadSwipe: boolean;
+  invertTrackpadSwipe: boolean;
+  trackpadThreshold: number;
 }

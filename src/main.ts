@@ -9,11 +9,14 @@ import { registerCommands } from './commands.ts';
 import { mousemoveHandler } from './mouseMove.ts';
 import { mouseupHandler } from './mouseUp.ts';
 import { MouseState } from './state/mouseState.ts';
+import { WheelState } from './state/wheelState.ts';
+import { wheelHandler } from './wheelHandler.ts';
 
 export default class EasytoggleSidebar extends Plugin {
   settings!: ETSSettings;
   ribbonIconEl: HTMLElement | null = null;
   mouse = new MouseState();
+  wheel = new WheelState();
   async onload(): Promise<void> {
     await this.loadSettings();
     this.addSettingTab(new ETSSettingTab(this.app, this));
@@ -56,6 +59,12 @@ export default class EasytoggleSidebar extends Plugin {
     );
     this.registerDomEvent(doc, 'mouseup', (e: MouseEvent) =>
       mouseupHandler(this, this.app, e)
+    );
+    this.registerDomEvent(
+      doc,
+      'wheel',
+      (e: WheelEvent) => wheelHandler(this, e),
+      { passive: true }
     );
     this.registerDomEvent(doc, 'click', autoHide.bind(this));
   }

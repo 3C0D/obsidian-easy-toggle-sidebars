@@ -238,5 +238,53 @@ export class ETSSettingTab extends PluginSettingTab {
           await this.plugin.saveSettings();
         });
       });
+
+    new Setting(containerEl)
+      .setName('Trackpad swipe')
+      .setDesc('Use a two-finger swipe to toggle sidebars (touchpad equivalent of the mouse click-and-move gesture)')
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.useTrackpadSwipe).onChange(async (value) => {
+          this.plugin.settings.useTrackpadSwipe = value;
+          await this.plugin.saveSettings();
+        });
+      });
+
+    new Setting(containerEl)
+      .setName('Invert trackpad swipe')
+      .setDesc('Invert swipe direction if it feels reversed (depends on OS natural scrolling setting)')
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.invertTrackpadSwipe).onChange(async (value) => {
+          this.plugin.settings.invertTrackpadSwipe = value;
+          await this.plugin.saveSettings();
+        });
+      });
+
+    new Setting(containerEl)
+      .setName('Trackpad swipe threshold(px)')
+      .setDesc('minimal accumulated swipe distance to trigger a toggle')
+      .addSlider((slider) => {
+        slider
+          .setLimits(
+            UI_CONSTANTS.TRACKPAD_THRESHOLD_MIN,
+            UI_CONSTANTS.TRACKPAD_THRESHOLD_MAX,
+            UI_CONSTANTS.MOVEMENT_SLIDER_STEP
+          )
+          .setValue(this.plugin.settings.trackpadThreshold)
+          .setDynamicTooltip()
+          .onChange(async (value) => {
+            this.plugin.settings.trackpadThreshold = value;
+            await this.plugin.saveSettings();
+          });
+      })
+      .addExtraButton((btn) => {
+        btn
+          .setIcon('reset')
+          .setTooltip('Reset to default')
+          .onClick(async () => {
+            this.plugin.settings.trackpadThreshold = DEFAULT_SETTINGS.trackpadThreshold;
+            await this.plugin.saveSettings();
+            this.display();
+          });
+      });
   }
 }
