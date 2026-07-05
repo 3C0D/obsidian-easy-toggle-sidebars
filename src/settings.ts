@@ -1,7 +1,7 @@
 import type { App } from 'obsidian';
 import { PluginSettingTab, Setting } from 'obsidian';
 import type EasytoggleSidebar from './main.ts';
-import { toggleAutoHideEvent, toggleColor, autoHideON } from './autoHide.ts';
+import { toggleColor, autoHideON } from './autoHide.ts';
 import { DEFAULT_SETTINGS, UI_CONSTANTS } from './constants/index.ts';
 
 export class ETSSettingTab extends PluginSettingTab {
@@ -33,7 +33,7 @@ export class ETSSettingTab extends PluginSettingTab {
 		</ul>
 
 		<br>
-		<b>Ohter features:</b>
+		<b>Other features:</b>
 		<ul>
 			<li>Auto-hide to automatically hide sidebars when clicking on the editor.</li>
 			<li>Use the setting "minimal editor width" to automatically hide the sidebars if the editor width is less than the specified threshold.</li>
@@ -142,14 +142,12 @@ export class ETSSettingTab extends PluginSettingTab {
           this.plugin.settings.autoHideRibbon = value;
           if (this.plugin.settings.autoHideRibbon) {
             this.plugin.settings.autoHide = true;
-            toggleAutoHideEvent(this.plugin);
             toggleColor(this.plugin);
             autoHideON(this.plugin);
           } else {
             this.plugin.ribbonIconEl?.remove();
             this.plugin.ribbonIconEl = null;
             this.plugin.settings.autoHide = false;
-            toggleAutoHideEvent(this.plugin);
             toggleColor(this.plugin);
           }
           await this.plugin.saveSettings();

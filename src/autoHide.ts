@@ -13,7 +13,6 @@ export function autoHideON(plugin: EasytoggleSidebar): void {
       settings.autoHide = !settings.autoHide;
       await plugin.saveSettings();
       toggleColor(plugin);
-      toggleAutoHideEvent(plugin);
       new Notice(
         settings.autoHide ? 'AutoHide Enabled' : 'AutoHide Disabled',
         UI_CONSTANTS.NOTICE_DURATION
@@ -29,20 +28,11 @@ export function toggleColor(plugin: EasytoggleSidebar): void {
     : plugin.ribbonIconEl?.removeClass('ribbon-color');
 }
 
-export function toggleAutoHideEvent(plugin: EasytoggleSidebar): void {
-  if (plugin.settings.autoHide) {
-    plugin.registerDomEvent(document, 'click', autoHide.bind(plugin));
-  } else {
-    document.removeEventListener('click', autoHide.bind(plugin));
-  }
-}
-
 export async function toggleAutoHide(plugin: EasytoggleSidebar): Promise<void> {
   const { settings } = plugin;
   settings.autoHide = !settings.autoHide;
   await plugin.saveSettings();
   toggleColor(plugin);
-  toggleAutoHideEvent(plugin);
   new Notice(
     settings.autoHide ? 'AutoHide Enabled' : 'AutoHide Disabled',
     UI_CONSTANTS.NOTICE_DURATION
@@ -55,15 +45,12 @@ export function autoHide(this: EasytoggleSidebar, evt: MouseEvent): void {
 
   if (!ZoneDetector.isEditorContent(element)) return;
 
-  // Check if clicking on reveal zones
+  // Don't trigger when clicking on reveal zones (view header title etc.)
   if (ZoneDetector.isRevealZone(element)) return;
 
-  // Check if in double-click zones on edges
-  if (ZoneDetector.isDoubleClickZone(element, evt)) {
-    return; // Don't trigger autoHide in double-click zones
-  }
+  // Don't trigger inside double-click edge zones
+  if (ZoneDetector.isDoubleClickZone(element, evt)) return;
 
-  // All collapsed
   const leftSplit = getLeftSplit(this.app);
   const rightSplit = getRightSplit(this.app);
   if (leftSplit.collapsed && rightSplit.collapsed) return;

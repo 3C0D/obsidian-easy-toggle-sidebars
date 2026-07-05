@@ -6,11 +6,8 @@ declare module 'obsidian' {
       executeCommandById(id: string): boolean;
     };
   }
-  interface WorkspaceSplit {
-    containerEl: HTMLElement;
-  }
   interface WorkspaceSidedock {
-    containerEl: HTMLElement;
+    containerEl: HTMLDivElement;
     setSize(width: number): void;
   }
 }

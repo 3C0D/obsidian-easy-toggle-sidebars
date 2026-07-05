@@ -15,18 +15,28 @@ export class ZoneDetector {
   }
 
   /**
+   * Returns which edge of the editor scroller the click happened on, or `null`
+   * if the click is not on a scroller edge zone.
+   */
+  static getScrollerEdge(
+    element: HTMLElement,
+    evt: MouseEvent
+  ): 'left' | 'right' | null {
+    const scroller = element.closest(CSS_SELECTORS.CM_SCROLLER);
+    if (!scroller) return null;
+
+    const rect = scroller.getBoundingClientRect();
+    const offsetX = evt.clientX - rect.left;
+    if (offsetX < UI_CONSTANTS.EDGE_ZONE_WIDTH) return 'left';
+    if (offsetX > rect.width - UI_CONSTANTS.EDGE_ZONE_WIDTH) return 'right';
+    return null;
+  }
+
+  /**
    * Check if element is in a double-click edge zone
    */
   static isDoubleClickZone(element: HTMLElement, evt: MouseEvent): boolean {
-    const isScroller = element.closest(CSS_SELECTORS.CM_SCROLLER);
-    if (!isScroller) return false;
-
-    const rect = isScroller.getBoundingClientRect();
-    const offsetX = evt.clientX - rect.left;
-    return (
-      offsetX < UI_CONSTANTS.EDGE_ZONE_WIDTH ||
-      offsetX > rect.width - UI_CONSTANTS.EDGE_ZONE_WIDTH
-    );
+    return ZoneDetector.getScrollerEdge(element, evt) !== null;
   }
 
   /**

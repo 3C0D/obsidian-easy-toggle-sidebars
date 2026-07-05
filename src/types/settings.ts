@@ -11,6 +11,3 @@ export interface ETSSettings {
   togglePin: boolean;
   reveal: boolean;
 }
-
-// NOTE: DEFAULT_SETTINGS are now defined in src/constants/index.ts
-// This file now only contains the interface definition

@@ -19,23 +19,20 @@ export function onResize(plugin: EasytoggleSidebar): void {
   if (!settings.autoMinRootWidth || (!isOpen(LS) && !isOpen(RS))) {
     return;
   }
+
   const editorWidth = R.containerEl.clientWidth;
   if (editorWidth < minRootWidth) {
-    updateSidebars(LS, RS, minRootWidth);
-  }
-  if (editorWidth < minRootWidth) {
+    updateSidebars(LS, RS);
+    // Re-check after attempting to shrink the sidebars; if the editor still
+    // doesn't fit the threshold, fully collapse both sidebars.
     const updatedEditorWidth = R.containerEl.clientWidth;
-    if (updatedEditorWidth <= minRootWidth) {
+    if (updatedEditorWidth < minRootWidth) {
       toggleBothSidebars(plugin);
     }
   }
 }
 
-function updateSidebars(
-  LS: WorkspaceSidedock,
-  RS: WorkspaceSidedock,
-  minRootWidth: number
-): void {
+function updateSidebars(LS: WorkspaceSidedock, RS: WorkspaceSidedock): void {
   if (LS.containerEl.clientWidth > UI_CONSTANTS.SIDEBAR_MIN_SIZE) {
     LS.setSize(UI_CONSTANTS.SIDEBAR_MIN_SIZE);
   }

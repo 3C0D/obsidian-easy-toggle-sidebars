@@ -8,16 +8,17 @@ function contextmenuHandler(evt: MouseEvent): void {
 }
 
 export function contextmenuListener(plugin: EasytoggleSidebar): void {
-  plugin.target?.addEventListener('contextmenu', contextmenuHandler, true);
+  plugin.mouse.target?.addEventListener('contextmenu', contextmenuHandler, true);
 }
 
 export function removeContextMenuListener(plugin: EasytoggleSidebar): void {
-  if (plugin.movedX || plugin.movedY || plugin.preventContextmenu) {
+  const { mouse } = plugin;
+  if (mouse.movedX || mouse.movedY || mouse.preventContextmenu) {
     setTimeout(() => {
-      plugin.target?.removeEventListener('contextmenu', contextmenuHandler, true);
-      plugin.movedX = false;
-      plugin.movedY = false;
-      plugin.preventContextmenu = null;
+      mouse.target?.removeEventListener('contextmenu', contextmenuHandler, true);
+      mouse.movedX = false;
+      mouse.movedY = false;
+      mouse.preventContextmenu = null;
     }, UI_CONSTANTS.CONTEXTMENU_TIMEOUT);
   }
 }
