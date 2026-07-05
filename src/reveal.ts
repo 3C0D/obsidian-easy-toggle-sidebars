@@ -1,6 +1,8 @@
 import type { App } from 'obsidian';
 
 export function reveal(app: App, e: MouseEvent): void {
+  if (!e.ctrlKey && !e.altKey) return;
+
   const target = e.target as HTMLElement;
   const headerTitleContainer = target.closest('.view-header-title-container');
   const headerTitle = target.closest('.view-header-title');
