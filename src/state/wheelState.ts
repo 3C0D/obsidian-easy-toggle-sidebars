@@ -6,7 +6,6 @@
  */
 export class WheelState {
   accumulatedX = 0;
-  accumulatedY = 0;
   resetTimeout: NodeJS.Timeout | null = null;
   triggered = false; // prevents multiple toggles within the same swipe burst
 }

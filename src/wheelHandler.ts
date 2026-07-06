@@ -8,19 +8,15 @@ export function wheelHandler(plugin: EasytoggleSidebar, e: WheelEvent): void {
   if (!settings.useTrackpadSwipe) return;
   // Avoid conflicting with an ongoing right/middle mouse click-and-move gesture
   if (mouse.isTracking) return;
+  if (!e.ctrlKey) return;
 
   const deltaX = settings.invertTrackpadSwipe ? -e.deltaX : e.deltaX;
-  const deltaY = settings.invertTrackpadSwipe ? -e.deltaY : e.deltaY;
 
   wheel.accumulatedX += deltaX;
-  wheel.accumulatedY += deltaY;
 
   if (!wheel.triggered) {
     if (Math.abs(wheel.accumulatedX) > settings.trackpadThreshold) {
       toggleIf(wheel.accumulatedX < 0 ? getLeftSplit(plugin.app) : getRightSplit(plugin.app));
-      wheel.triggered = true;
-    } else if (Math.abs(wheel.accumulatedY) > settings.trackpadThreshold) {
-      toggleIf(wheel.accumulatedY < 0 ? getLeftSplit(plugin.app) : getRightSplit(plugin.app));
       wheel.triggered = true;
     }
   }
@@ -30,7 +26,6 @@ export function wheelHandler(plugin: EasytoggleSidebar, e: WheelEvent): void {
   if (wheel.resetTimeout) clearTimeout(wheel.resetTimeout);
   wheel.resetTimeout = setTimeout(() => {
     wheel.accumulatedX = 0;
-    wheel.accumulatedY = 0;
     wheel.triggered = false;
     wheel.resetTimeout = null;
   }, UI_CONSTANTS.TRACKPAD_RESET_DELAY);
