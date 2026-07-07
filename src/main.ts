@@ -51,22 +51,26 @@ export default class EasytoggleSidebar extends Plugin {
   }
 
   private registerDomEvents(doc: Document): void {
-    this.registerDomEvent(doc, 'mousedown', (e: MouseEvent) =>
-      mousedownHandler(this, e)
-    );
-    this.registerDomEvent(doc, 'mousemove', (e: MouseEvent) =>
-      mousemoveHandler(this, e)
-    );
+    const isMainWindow = doc === document;
+
+    if (isMainWindow) {
+      this.registerDomEvent(doc, 'mousedown', (e: MouseEvent) =>
+        mousedownHandler(this, e)
+      );
+      this.registerDomEvent(doc, 'mousemove', (e: MouseEvent) =>
+        mousemoveHandler(this, e)
+      );
+      this.registerDomEvent(doc, 'wheel', (e: WheelEvent) => wheelHandler(this, e), {
+        passive: false
+      });
+      this.registerDomEvent(doc, 'click', autoHide.bind(this));
+    }
+
+    // mouseup always registers: Toggle Pin applies to every window, the rest
+    // of mouseupHandler self-gates on isMainWindow.
     this.registerDomEvent(doc, 'mouseup', (e: MouseEvent) =>
-      mouseupHandler(this, this.app, e)
+      mouseupHandler(this, this.app, e, isMainWindow)
     );
-    this.registerDomEvent(
-      doc,
-      'wheel',
-      (e: WheelEvent) => wheelHandler(this, e),
-      { passive: true }
-    );
-    this.registerDomEvent(doc, 'click', autoHide.bind(this));
   }
 
   async loadSettings(): Promise<void> {
