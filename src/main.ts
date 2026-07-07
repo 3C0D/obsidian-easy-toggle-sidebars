@@ -9,14 +9,14 @@ import { registerCommands } from './commands.ts';
 import { mousemoveHandler } from './mouseMove.ts';
 import { mouseupHandler } from './mouseUp.ts';
 import { MouseState } from './state/mouseState.ts';
-import { WheelState } from './state/wheelState.ts';
-import { wheelHandler } from './wheelHandler.ts';
+import { KeyGestureState } from './state/keyGestureState.ts';
+import { keydownHandler, keyupHandler } from './keyGesture.ts';
 
 export default class EasytoggleSidebar extends Plugin {
   settings!: ETSSettings;
   ribbonIconEl: HTMLElement | null = null;
   mouse = new MouseState();
-  wheel = new WheelState();
+  keyGesture = new KeyGestureState();
   async onload(): Promise<void> {
     await this.loadSettings();
     this.addSettingTab(new ETSSettingTab(this.app, this));
@@ -60,10 +60,13 @@ export default class EasytoggleSidebar extends Plugin {
       this.registerDomEvent(doc, 'mousemove', (e: MouseEvent) =>
         mousemoveHandler(this, e)
       );
-      this.registerDomEvent(doc, 'wheel', (e: WheelEvent) => wheelHandler(this, e), {
-        passive: false
-      });
       this.registerDomEvent(doc, 'click', autoHide.bind(this));
+      // keydown/keyup scoped to the main window, matching mousemove above:
+      // this is where the trackpad swipe gesture is actually captured.
+      this.registerDomEvent(doc, 'keydown', (e: KeyboardEvent) =>
+        keydownHandler(this, e)
+      );
+      this.registerDomEvent(doc, 'keyup', (e: KeyboardEvent) => keyupHandler(this, e));
     }
 
     // mouseup always registers: Toggle Pin applies to every window, the rest

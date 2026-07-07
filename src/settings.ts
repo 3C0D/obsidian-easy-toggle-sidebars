@@ -45,7 +45,7 @@ export class ETSSettingTab extends PluginSettingTab {
 			<li><b>Horizontal and Vertical Move Threshold:</b> You can customize the sensitivity of the click-and-move gesture by adjusting the horizontal and vertical move thresholds in settings.</li>
 			<li><b>Right and Middle Mouse Button Activation:</b> You can enable or disable the use of the right and middle mouse buttons in settings.</li>
 			<li><b>Double-Click Delay:</b> You can customize the delay for double-click actions in settings.</li>
-		</ul>		
+		</ul>
 		`;
     const fragment = createFragment((el) => {
       el.createEl('div').innerHTML = content;
@@ -241,7 +241,9 @@ export class ETSSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName('Trackpad swipe')
-      .setDesc('Use a two-finger swipe to toggle sidebars (touchpad equivalent of the mouse click-and-move gesture)')
+      .setDesc(
+        'Hold the modifier(s) selected below and do a two-finger swipe. Release them before doing another swipe (touchpad equivalent of the mouse click-and-move gesture)'
+      )
       .addToggle((toggle) => {
         toggle.setValue(this.plugin.settings.useTrackpadSwipe).onChange(async (value) => {
           this.plugin.settings.useTrackpadSwipe = value;
@@ -250,13 +252,38 @@ export class ETSSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Invert trackpad swipe')
-      .setDesc('Invert swipe direction if it feels reversed (depends on OS natural scrolling setting)')
+      .setName('Trackpad swipe: Ctrl')
+      .setDesc('Require Ctrl to be held for the trackpad swipe gesture')
       .addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.invertTrackpadSwipe).onChange(async (value) => {
-          this.plugin.settings.invertTrackpadSwipe = value;
-          await this.plugin.saveSettings();
-        });
+        toggle
+          .setValue(this.plugin.settings.trackpadModifiers.ctrl)
+          .onChange(async (value) => {
+            // At least one modifier must stay enabled, otherwise
+            // areModifierKeysPressed would be vacuously true for any key and
+            // the gesture would arm on any keydown; see keyGesture.ts.
+            if (!value && !this.plugin.settings.trackpadModifiers.alt) {
+              toggle.setValue(true);
+              return;
+            }
+            this.plugin.settings.trackpadModifiers.ctrl = value;
+            await this.plugin.saveSettings();
+          });
+      });
+
+    new Setting(containerEl)
+      .setName('Trackpad swipe: Alt')
+      .setDesc('Require Alt to be held for the trackpad swipe gesture')
+      .addToggle((toggle) => {
+        toggle
+          .setValue(this.plugin.settings.trackpadModifiers.alt)
+          .onChange(async (value) => {
+            if (!value && !this.plugin.settings.trackpadModifiers.ctrl) {
+              toggle.setValue(true);
+              return;
+            }
+            this.plugin.settings.trackpadModifiers.alt = value;
+            await this.plugin.saveSettings();
+          });
       });
 
     new Setting(containerEl)

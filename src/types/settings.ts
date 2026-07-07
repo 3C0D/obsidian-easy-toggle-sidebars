@@ -11,6 +11,9 @@ export interface ETSSettings {
   togglePin: boolean;
   reveal: boolean;
   useTrackpadSwipe: boolean;
-  invertTrackpadSwipe: boolean;
+  trackpadModifiers: {
+    ctrl: boolean;
+    alt: boolean;
+  };
   trackpadThreshold: number;
 }

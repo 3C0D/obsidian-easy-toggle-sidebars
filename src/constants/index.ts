@@ -12,10 +12,7 @@ export const UI_CONSTANTS = {
   RIBBON_TOGGLE_DELAY: 300,
   NOTICE_DURATION: 2000,
   TRACKPAD_THRESHOLD_MIN: 30,
-  TRACKPAD_THRESHOLD_MAX: 200,
-  TRACKPAD_RESET_DELAY: 80,
-  TRACKPAD_RETRIGGER_DELAY: 150,
-  TRACKPAD_MOMENTUM_THRESHOLD: 3
+  TRACKPAD_THRESHOLD_MAX: 200
 } as const;
 
 export const CSS_SELECTORS = {
@@ -42,6 +39,6 @@ export const DEFAULT_SETTINGS = {
   togglePin: true,
   reveal: true,
   useTrackpadSwipe: true,
-  invertTrackpadSwipe: false,
+  trackpadModifiers: { ctrl: true, alt: false },
   trackpadThreshold: 80
 } as const;

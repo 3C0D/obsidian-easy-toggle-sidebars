@@ -4,6 +4,31 @@ import { contextmenuListener } from './tools.ts';
 
 export function mousemoveHandler(plugin: EasytoggleSidebar, e: MouseEvent): void {
   const { mouse, settings } = plugin;
+
+  // Trackpad swipe: Ctrl held, no mouse button involved. Armed on keydown
+  // (see keyGesture.ts). The gesture itself starts here, on the first
+  // mousemove after arming, since KeyboardEvent carries no cursor position
+  // to seed startX from.
+  if (plugin.keyGesture.armed) {
+    const { keyGesture } = plugin;
+    if (!keyGesture.isTracking) {
+      keyGesture.isTracking = true;
+      keyGesture.startX = e.clientX;
+      e.preventDefault();
+      return;
+    }
+
+    const deltaX = e.clientX - keyGesture.startX;
+
+    if (Math.abs(deltaX) > settings.trackpadThreshold) {
+      toggleIf(deltaX < 0 ? getLeftSplit(plugin.app) : getRightSplit(plugin.app));
+      keyGesture.armed = false;
+      keyGesture.isTracking = false;
+    }
+    e.preventDefault();
+    return;
+  }
+
   if (!mouse.button || mouse.button === 0 || !mouse.isTracking) return;
   mouse.endX = e.clientX;
   mouse.endY = e.clientY;
