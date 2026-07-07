@@ -17,34 +17,22 @@ export class ETSSettingTab extends PluginSettingTab {
     containerEl.empty();
     const content = `
 		<br>
-		<b>Right/Middle Mouse Click Usage:</b>
+		<b>Swipe gesture (mouse & trackpad):</b>
 		<ul>
-			<li><b>Click and move towards right/left (or top/bottom):</b> Toggles the right/left sidebar.</li>
-			<li>Double click to toggle both sidebars in the editor and the ribbon bar.</li>
+			<li>Hold the modifier(s) selected below and swipe. No click needed — just hold then move.</li>
+			<li><b>Swipe left/right:</b> Toggles the left/right sidebar.</li>
+			<li><b>Swipe down:</b> Toggles both sidebars.</li>
+			<li><b>Swipe up:</b> Reveals the active file in the file explorer.</li>
+			<li>Works on all views (editor, Canvas, etc.).</li>
+			<li>Won't trigger during a click-and-drag (text selection, etc.).</li>
 		</ul>
 
-		<b>With LeftMouseButton: </b>
-		<ul>
-		<li><b>Double/Triple click on the ribbon bar:</b> Toggles the left/right sidebar (especially useful in canvas mode). </li>
-		<li><b>Double click on the left/right edges of the editor to toggle the left/right sidebar.</li>
-		<li><b>Click on the view header title or around it:</b> Reveals the active file in the file explorer.</li>
-		<li><b>Double click on the tab header:</b> Toggles the tab pinning (works in any window and view type).</li>
-		</ul>
-
-		<br>
 		<b>Other features:</b>
 		<ul>
-			<li>Auto-hide to automatically hide sidebars when clicking on the editor.</li>
-			<li>Use the setting "minimal editor width" to automatically hide the sidebars if the editor width is less than the specified threshold.</li>
-		</ul>
-
-		<br>
-		<b>Settings:</b>
-		<p>Every setting can be customized in the settings.</p>
-		<ul>
-			<li><b>Horizontal and Vertical Move Threshold:</b> You can customize the sensitivity of the click-and-move gesture by adjusting the horizontal and vertical move thresholds in settings.</li>
-			<li><b>Right and Middle Mouse Button Activation:</b> You can enable or disable the use of the right and middle mouse buttons in settings.</li>
-			<li><b>Double-Click Delay:</b> You can customize the delay for double-click actions in settings.</li>
+			<li><b>Click on the view header title with modifiers:</b> Reveals the active file in the file explorer.</li>
+			<li><b>Double click on the tab header:</b> Toggles the tab pinning.</li>
+			<li><b>Auto-hide:</b> Automatically hides sidebars when clicking anywhere in the content area (works in all views including Canvas).</li>
+			<li><b>Minimal editor width:</b> Automatically hides sidebars if the editor is narrower than the threshold.</li>
 		</ul>
 		`;
     const fragment = createFragment((el) => {
@@ -54,82 +42,6 @@ export class ETSSettingTab extends PluginSettingTab {
     containerEl.createDiv('', (el: HTMLDivElement) => {
       el.appendChild(fragment);
     });
-
-    new Setting(containerEl)
-      .setName('Right Mouse')
-      .setDesc('Activates Right Mouse to trigger operations')
-      .addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.useRightMouse).onChange((value) => {
-          this.plugin.settings.useRightMouse = value;
-          this.plugin.saveSettings();
-        });
-      });
-
-    new Setting(containerEl)
-      .setName('Middle Mouse')
-      .setDesc('Activates Middle Mouse to trigger operations')
-      .addToggle((toggle) => {
-        toggle.setValue(this.plugin.settings.useMiddleMouse).onChange(async (value) => {
-          this.plugin.settings.useMiddleMouse = value;
-          await this.plugin.saveSettings();
-        });
-      });
-
-    new Setting(containerEl)
-      .setName('Horizontal Move threshold(px)')
-      .setDesc('the most used')
-      .addSlider((slider) => {
-        slider
-          .setLimits(
-            UI_CONSTANTS.MOVE_THRESHOLD_MIN,
-            UI_CONSTANTS.MOVE_THRESHOLD_MAX,
-            UI_CONSTANTS.MOVEMENT_SLIDER_STEP
-          )
-          .setValue(this.plugin.settings.moveThresholdHor)
-          .setDynamicTooltip()
-          .onChange(async (value) => {
-            this.plugin.settings.moveThresholdHor = value;
-            await this.plugin.saveSettings();
-          });
-      })
-      .addExtraButton((btn) => {
-        btn
-          .setIcon('reset')
-          .setTooltip('Reset to default')
-          .onClick(async () => {
-            this.plugin.settings.moveThresholdHor = DEFAULT_SETTINGS.moveThresholdHor;
-            await this.plugin.saveSettings();
-            this.display();
-          });
-      });
-
-    new Setting(containerEl)
-      .setName('Vertical Move threshold(px)')
-      .setDesc('could be used in ribbon bar, when using canvas')
-      .addSlider((slider) => {
-        slider
-          .setLimits(
-            UI_CONSTANTS.MOVE_THRESHOLD_MIN,
-            UI_CONSTANTS.MOVE_THRESHOLD_MAX,
-            UI_CONSTANTS.MOVEMENT_SLIDER_STEP
-          )
-          .setValue(this.plugin.settings.moveThresholdVert)
-          .setDynamicTooltip()
-          .onChange(async (value) => {
-            this.plugin.settings.moveThresholdVert = value;
-            await this.plugin.saveSettings();
-          });
-      })
-      .addExtraButton((btn) => {
-        btn
-          .setIcon('reset')
-          .setTooltip('Reset to default')
-          .onClick(async () => {
-            this.plugin.settings.moveThresholdVert = DEFAULT_SETTINGS.moveThresholdVert;
-            await this.plugin.saveSettings();
-            this.display();
-          });
-      });
 
     new Setting(containerEl)
       .setName('Auto hide')
@@ -194,35 +106,7 @@ export class ETSSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('double click delay(ms)')
-      .setDesc('max delay to trigger a double click')
-      .addSlider((slider) => {
-        slider
-          .setLimits(
-            UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY - 250,
-            UI_CONSTANTS.DEFAULT_DOUBLE_CLICK_DELAY + 150,
-            UI_CONSTANTS.SLIDER_STEP
-          )
-          .setValue(this.plugin.settings.dblClickDelay)
-          .setDynamicTooltip()
-          .onChange(async (value) => {
-            this.plugin.settings.dblClickDelay = value;
-            await this.plugin.saveSettings();
-          });
-      })
-      .addExtraButton((btn) => {
-        btn
-          .setIcon('reset')
-          .setTooltip('Reset to default')
-          .onClick(async () => {
-            this.plugin.settings.dblClickDelay = DEFAULT_SETTINGS.dblClickDelay;
-            await this.plugin.saveSettings();
-            this.display();
-          });
-      });
-
-    new Setting(containerEl)
-      .setName('double click on tab headers to toggle pin')
+      .setName('Double click on tab headers to toggle pin')
       .addToggle((toggle) => {
         toggle.setValue(this.plugin.settings.togglePin).onChange(async (value) => {
           this.plugin.settings.togglePin = value;
@@ -231,7 +115,10 @@ export class ETSSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('reveal file clicking on view header title')
+      .setName('Reveal file on title click with modifiers')
+      .setDesc(
+        'Click the view header title while holding the configured modifiers to reveal the active file'
+      )
       .addToggle((toggle) => {
         toggle.setValue(this.plugin.settings.reveal).onChange(async (value) => {
           this.plugin.settings.reveal = value;
@@ -240,9 +127,9 @@ export class ETSSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Trackpad swipe')
+      .setName('Swipe gesture')
       .setDesc(
-        'Hold the modifier(s) selected below and do a two-finger swipe. Release them before doing another swipe (touchpad equivalent of the mouse click-and-move gesture)'
+        'Hold the modifier(s) selected below and swipe (works with both mouse and trackpad). Left/right toggles sidebars, down toggles both, up reveals active file.'
       )
       .addToggle((toggle) => {
         toggle.setValue(this.plugin.settings.useTrackpadSwipe).onChange(async (value) => {
@@ -252,16 +139,39 @@ export class ETSSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Trackpad swipe: Ctrl')
-      .setDesc('Require Ctrl to be held for the trackpad swipe gesture')
+      .setName('Swipe gesture: Shift')
+      .setDesc('Require Shift to be held for the swipe gesture')
+      .addToggle((toggle) => {
+        toggle
+          .setValue(this.plugin.settings.trackpadModifiers.shift)
+          .onChange(async (value) => {
+            if (
+              !value &&
+              !this.plugin.settings.trackpadModifiers.ctrl &&
+              !this.plugin.settings.trackpadModifiers.alt &&
+              !this.plugin.settings.trackpadModifiers.meta
+            ) {
+              toggle.setValue(true);
+              return;
+            }
+            this.plugin.settings.trackpadModifiers.shift = value;
+            await this.plugin.saveSettings();
+          });
+      });
+
+    new Setting(containerEl)
+      .setName('Swipe gesture: Ctrl')
+      .setDesc('Require Ctrl to be held for the swipe gesture')
       .addToggle((toggle) => {
         toggle
           .setValue(this.plugin.settings.trackpadModifiers.ctrl)
           .onChange(async (value) => {
-            // At least one modifier must stay enabled, otherwise
-            // areModifierKeysPressed would be vacuously true for any key and
-            // the gesture would arm on any keydown; see keyGesture.ts.
-            if (!value && !this.plugin.settings.trackpadModifiers.alt) {
+            if (
+              !value &&
+              !this.plugin.settings.trackpadModifiers.shift &&
+              !this.plugin.settings.trackpadModifiers.alt &&
+              !this.plugin.settings.trackpadModifiers.meta
+            ) {
               toggle.setValue(true);
               return;
             }
@@ -271,13 +181,18 @@ export class ETSSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Trackpad swipe: Alt')
-      .setDesc('Require Alt to be held for the trackpad swipe gesture')
+      .setName('Swipe gesture: Alt')
+      .setDesc('Require Alt to be held for the swipe gesture')
       .addToggle((toggle) => {
         toggle
           .setValue(this.plugin.settings.trackpadModifiers.alt)
           .onChange(async (value) => {
-            if (!value && !this.plugin.settings.trackpadModifiers.ctrl) {
+            if (
+              !value &&
+              !this.plugin.settings.trackpadModifiers.shift &&
+              !this.plugin.settings.trackpadModifiers.ctrl &&
+              !this.plugin.settings.trackpadModifiers.meta
+            ) {
               toggle.setValue(true);
               return;
             }
@@ -287,7 +202,28 @@ export class ETSSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Trackpad swipe threshold(px)')
+      .setName('Swipe gesture: Win / Meta')
+      .setDesc('Require Win (Meta on Linux, Cmd on Mac) to be held for the swipe gesture')
+      .addToggle((toggle) => {
+        toggle
+          .setValue(this.plugin.settings.trackpadModifiers.meta)
+          .onChange(async (value) => {
+            if (
+              !value &&
+              !this.plugin.settings.trackpadModifiers.shift &&
+              !this.plugin.settings.trackpadModifiers.ctrl &&
+              !this.plugin.settings.trackpadModifiers.alt
+            ) {
+              toggle.setValue(true);
+              return;
+            }
+            this.plugin.settings.trackpadModifiers.meta = value;
+            await this.plugin.saveSettings();
+          });
+      });
+
+    new Setting(containerEl)
+      .setName('Swipe threshold(px)')
       .setDesc('minimal accumulated swipe distance to trigger a toggle')
       .addSlider((slider) => {
         slider

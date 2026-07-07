@@ -1,66 +1,44 @@
-import { getLeftSplit, getRightSplit, toggleIf } from './barTools.ts';
+import { getLeftSplit, getRightSplit, toggleBothSidebars, toggleIf } from './barTools.ts';
 import type EasytoggleSidebar from './main.ts';
-import { contextmenuListener } from './tools.ts';
+import { revealActiveFile } from './reveal.ts';
 
 export function mousemoveHandler(plugin: EasytoggleSidebar, e: MouseEvent): void {
-  const { mouse, settings } = plugin;
+  const { keyGesture, settings } = plugin;
 
-  // Trackpad swipe: Ctrl held, no mouse button involved. Armed on keydown
-  // (see keyGesture.ts). The gesture itself starts here, on the first
-  // mousemove after arming, since KeyboardEvent carries no cursor position
-  // to seed startX from.
-  if (plugin.keyGesture.armed) {
-    const { keyGesture } = plugin;
-    if (!keyGesture.isTracking) {
-      keyGesture.isTracking = true;
-      keyGesture.startX = e.clientX;
-      e.preventDefault();
-      return;
-    }
+  if (!keyGesture.armed || keyGesture.done) return;
 
-    const deltaX = e.clientX - keyGesture.startX;
-
-    if (Math.abs(deltaX) > settings.trackpadThreshold) {
-      toggleIf(deltaX < 0 ? getLeftSplit(plugin.app) : getRightSplit(plugin.app));
-      keyGesture.armed = false;
-      keyGesture.isTracking = false;
-    }
+  // First mousemove after arming: seed the start position.
+  if (!keyGesture.isTracking) {
+    keyGesture.isTracking = true;
+    keyGesture.startX = e.clientX;
+    keyGesture.startY = e.clientY;
     e.preventDefault();
     return;
   }
 
-  if (!mouse.button || mouse.button === 0 || !mouse.isTracking) return;
-  mouse.endX = e.clientX;
-  mouse.endY = e.clientY;
+  const deltaX = e.clientX - keyGesture.startX;
+  const deltaY = e.clientY - keyGesture.startY;
+  const absX = Math.abs(deltaX);
+  const absY = Math.abs(deltaY);
+  const threshold = settings.trackpadThreshold;
 
-  const distanceX = Math.abs(e.clientX - mouse.startX);
-  const distanceY = Math.abs(e.clientY - mouse.startY);
-
-  mouse.movedX = distanceX > settings.moveThresholdHor;
-  mouse.movedY = distanceY > settings.moveThresholdVert;
-
-  if (mouse.movedX || mouse.movedY) {
-    // Direction mapping (intentional):
-    //   - Horizontal: left  -> left sidebar,  right -> right sidebar
-    //   - Vertical:   up    -> left sidebar,  down  -> right sidebar
-    // The vertical mapping is mainly useful when starting the gesture from the
-    // ribbon bar (e.g. in canvas mode) where horizontal room is limited.
-    if (
-      (mouse.movedX && mouse.endX < mouse.startX) ||
-      (mouse.movedY && mouse.endY < mouse.startY)
-    ) {
-      toggleIf(getLeftSplit(plugin.app));
-    } else if (
-      (mouse.movedX && mouse.endX > mouse.startX) ||
-      (mouse.movedY && mouse.endY > mouse.startY)
-    ) {
-      toggleIf(getRightSplit(plugin.app));
+  if (absX > threshold || absY > threshold) {
+    if (absY > absX) {
+      if (deltaY > 0) {
+        // Vertical downward swipe → toggle both sidebars
+        toggleBothSidebars(plugin);
+      } else {
+        // Vertical upward swipe → reveal active file in explorer
+        revealActiveFile(plugin.app);
+      }
+    } else if (absX >= absY) {
+      // Horizontal swipe → left or right sidebar
+      toggleIf(deltaX < 0 ? getLeftSplit(plugin.app) : getRightSplit(plugin.app));
     }
-    mouse.startX = e.clientX;
-    mouse.startY = e.clientY;
-    if (mouse.button === 2) contextmenuListener(plugin);
-    mouse.isTracking = false;
-    mouse.button = null;
-    return;
+    // Mark gesture as done so further mousemoves are ignored until the
+    // modifiers are released and re-armed.
+    keyGesture.done = true;
+    keyGesture.isTracking = false;
   }
+  e.preventDefault();
 }

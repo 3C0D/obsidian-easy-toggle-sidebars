@@ -1,71 +1,32 @@
-import { CSS_SELECTORS, UI_CONSTANTS } from '../constants/index.ts';
+import { CSS_SELECTORS } from '../constants/index.ts';
 
 /**
- * Utilities for DOM zone detection and UI interactions
+ * Utilities for DOM zone detection.
+ * Used by autoHide and togglePin.
  */
 export class ZoneDetector {
   /**
-   * Check if element is in a reveal zone
+   * Check if element is in the view header zone (tab bar / title area).
+   * Used by autoHide to avoid triggering when clicking the header
+   * (title, buttons, breadcrumb, etc.).
    */
-  static isRevealZone(element: HTMLElement): boolean {
-    return !!(
-      element.closest(CSS_SELECTORS.VIEW_HEADER_TITLE_CONTAINER) ||
-      element.closest(CSS_SELECTORS.VIEW_HEADER_TITLE)
-    );
+  static isViewHeader(element: HTMLElement): boolean {
+    return !!element.closest('.view-header');
   }
 
   /**
-   * Returns which edge of the editor scroller the click happened on, or `null`
-   * if the click is not on a scroller edge zone.
-   */
-  static getScrollerEdge(
-    element: HTMLElement,
-    evt: MouseEvent
-  ): 'left' | 'right' | null {
-    const scroller = element.closest(CSS_SELECTORS.CM_SCROLLER);
-    if (!scroller) return null;
-
-    const rect = scroller.getBoundingClientRect();
-    const offsetX = evt.clientX - rect.left;
-    if (offsetX < UI_CONSTANTS.EDGE_ZONE_WIDTH) return 'left';
-    if (offsetX > rect.width - UI_CONSTANTS.EDGE_ZONE_WIDTH) return 'right';
-    return null;
-  }
-
-  /**
-   * Check if element is in a double-click edge zone
-   */
-  static isDoubleClickZone(element: HTMLElement, evt: MouseEvent): boolean {
-    return ZoneDetector.getScrollerEdge(element, evt) !== null;
-  }
-
-  /**
-   * Check if element is in the ribbon zone
-   */
-  static isRibbonZone(element: HTMLElement): boolean {
-    return !!element.closest(CSS_SELECTORS.WORKSPACE_RIBBON);
-  }
-
-  /**
-   * Check if element is in the main editor zone
-   */
-  static isEditorZone(element: HTMLElement): boolean {
-    return !!element.closest(CSS_SELECTORS.MOD_ROOT_VIEW_CONTENT);
-  }
-
-  /**
-   * Check if element is in the editor content zone
+   * Check if element is inside a workspace leaf (editor, Canvas, etc.).
+   * Used by autoHide to detect clicks in the main content area.
    */
   static isEditorContent(element: HTMLElement): boolean {
-    const isContentContainer = element.closest(CSS_SELECTORS.CM_CONTENT_CONTAINER);
-    return !!isContentContainer;
+    return !!element.closest('.workspace-leaf');
   }
 
   /**
-   * Check if element is a tab header element
+   * Check if element is a tab header element.
+   * Used by mouseUp for the Toggle Pin feature.
    */
   static isTabHeader(element: HTMLElement): boolean {
     return !!element.closest(CSS_SELECTORS.WORKSPACE_TAB_HEADER_INNER_TITLE);
   }
 }
-

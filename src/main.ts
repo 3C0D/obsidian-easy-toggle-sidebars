@@ -1,6 +1,5 @@
 import { Plugin } from 'obsidian';
 import { ETSSettingTab } from './settings.ts';
-import { mousedownHandler } from './mouseDown.ts';
 import { autoHide, autoHideON } from './autoHide.ts';
 import { onResize } from './window.ts';
 import type { ETSSettings } from './types/settings.ts';
@@ -10,7 +9,14 @@ import { mousemoveHandler } from './mouseMove.ts';
 import { mouseupHandler } from './mouseUp.ts';
 import { MouseState } from './state/mouseState.ts';
 import { KeyGestureState } from './state/keyGestureState.ts';
-import { keydownHandler, keyupHandler } from './keyGesture.ts';
+import {
+  keydownHandler,
+  keyupHandler,
+  pointerBlockHandler,
+  pointerDownHandler,
+  pointerUpHandler
+} from './keyGesture.ts';
+import { WelcomeModal } from './welcome.ts';
 
 export default class EasytoggleSidebar extends Plugin {
   settings!: ETSSettings;
@@ -21,6 +27,9 @@ export default class EasytoggleSidebar extends Plugin {
     await this.loadSettings();
     this.addSettingTab(new ETSSettingTab(this.app, this));
     if (this.settings.autoHideRibbon) autoHideON(this);
+    if (!this.settings.welcomeShown) {
+      new WelcomeModal(this).open();
+    }
     this.app.workspace.onLayoutReady(this.onLayoutReady.bind(this));
   }
 
@@ -54,19 +63,46 @@ export default class EasytoggleSidebar extends Plugin {
     const isMainWindow = doc === document;
 
     if (isMainWindow) {
-      this.registerDomEvent(doc, 'mousedown', (e: MouseEvent) =>
-        mousedownHandler(this, e)
-      );
       this.registerDomEvent(doc, 'mousemove', (e: MouseEvent) =>
         mousemoveHandler(this, e)
       );
       this.registerDomEvent(doc, 'click', autoHide.bind(this));
       // keydown/keyup scoped to the main window, matching mousemove above:
-      // this is where the trackpad swipe gesture is actually captured.
+      // this is where the swipe gesture is actually captured.
       this.registerDomEvent(doc, 'keydown', (e: KeyboardEvent) =>
         keydownHandler(this, e)
       );
       this.registerDomEvent(doc, 'keyup', (e: KeyboardEvent) => keyupHandler(this, e));
+
+      // Track pointer button state in capture phase to prevent the swipe
+      // gesture from arming during a click-and-drag (text selection, etc.).
+      this.registerDomEvent(
+        doc,
+        'pointerdown',
+        (e: PointerEvent) => pointerDownHandler(this, e),
+        true
+      );
+      this.registerDomEvent(
+        doc,
+        'pointerup',
+        (e: PointerEvent) => pointerUpHandler(this, e),
+        true
+      );
+
+      // Block pointer events in capture phase while the gesture is armed,
+      // so views like Canvas can't interpret Ctrl+drag as a marquee selection.
+      this.registerDomEvent(
+        doc,
+        'pointermove',
+        (e: PointerEvent) => pointerBlockHandler(this, e),
+        true
+      );
+      this.registerDomEvent(
+        doc,
+        'pointerdown',
+        (e: PointerEvent) => pointerBlockHandler(this, e),
+        true
+      );
     }
 
     // mouseup always registers: Toggle Pin applies to every window, the rest

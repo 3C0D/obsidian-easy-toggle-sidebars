@@ -45,11 +45,8 @@ export function autoHide(this: EasytoggleSidebar, evt: MouseEvent): void {
 
   if (!ZoneDetector.isEditorContent(element)) return;
 
-  // Don't trigger when clicking on reveal zones (view header title etc.)
-  if (ZoneDetector.isRevealZone(element)) return;
-
-  // Don't trigger inside double-click edge zones
-  if (ZoneDetector.isDoubleClickZone(element, evt)) return;
+  // Don't trigger when clicking the view header (title, buttons, etc.)
+  if (ZoneDetector.isViewHeader(element)) return;
 
   const leftSplit = getLeftSplit(this.app);
   const rightSplit = getRightSplit(this.app);
