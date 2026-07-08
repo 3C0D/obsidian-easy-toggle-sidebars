@@ -138,12 +138,6 @@ export class ETSSettingTab extends PluginSettingTab {
         });
       });
 
-    new Setting(containerEl).setName('Swipe gesture modifiers').setHeading();
-    containerEl.createEl('p', {
-      text: 'At least one modifier below must stay enabled. Note: on some EU keyboards, AltGr can be reported as Ctrl, so a Ctrl-only configuration may also trigger on AltGr.',
-      cls: 'setting-item-description'
-    });
-
     new Setting(containerEl)
       .setName('Swipe gesture: Shift')
       .setDesc('Require Shift to be held for the swipe gesture')

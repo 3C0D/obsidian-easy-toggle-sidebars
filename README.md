@@ -2,7 +2,7 @@
 
 ## How It Works
 
-**1. Choose a modifier combination** — pick any combination of Ctrl, Shift, Alt, Win/Meta (e.g. Ctrl+Shift).
+**1. Choose a modifier combination** — pick any combination of Ctrl, Shift, Alt, Win/Meta (e.g. Ctrl+Shift). Ctrl by default.
 
 **2. Hold the modifiers and move the mouse** over the editor (no click needed):
 
@@ -37,7 +37,7 @@ Works with both **mouse** and **trackpad**.
 
 The matching is **exact**: if you configure Ctrl+Shift, holding an extra key like Alt will **not** trigger the gesture. This prevents conflicts with other plugins.
 
-> Note: **Ctrl+Alt is equivalent to AltGr** on keyboards that have an AltGr key.
+> Note: **Ctrl+Alt is equivalent to AltGr**.
 
 ## Commands
 

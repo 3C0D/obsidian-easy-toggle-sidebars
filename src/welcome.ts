@@ -15,7 +15,7 @@ export class WelcomeModal extends Modal {
     contentEl.createEl('h2', { text: "Easy Toggle Sidebars: What's New" });
 
     const content = `
-      <p>Pick a modifier combination in settings (Ctrl, Shift, Alt, Win/Meta), hold it and just move the mouse/trackpad over the editor without clicking.</p>
+      <p>Pick a modifier combination in settings (Ctrl, Shift, Alt, Win/Meta), hold it (Ctrl by default) and just move the mouse/trackpad over the editor without clicking.</p>
       <table>
         <tr><th>Direction</th><th>Action</th></tr>
         <tr><td>→ Right</td><td>Toggle right sidebar</td></tr>
@@ -23,7 +23,7 @@ export class WelcomeModal extends Modal {
         <tr><td>↓ Down</td><td>Toggle both sidebars</td></tr>
         <tr><td>↑ Up</td><td>Reveal active file in explorer</td></tr>
       </table>
-      <p>Release the modifiers between two gestures.</p>
+      <p>Release the modifier(s) between two gestures.</p>
       <p>Also:</p>
       <ul>
         <li>Reveal on title click: hold modifiers and click the view header</li>

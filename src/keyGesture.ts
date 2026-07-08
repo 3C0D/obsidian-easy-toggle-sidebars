@@ -14,14 +14,21 @@ export function keydownHandler(plugin: EasytoggleSidebar, e: KeyboardEvent): voi
   const { keyGesture, settings } = plugin;
   if (!settings.useTrackpadSwipe) return;
   if (!MODIFIER_KEYS.has(e.key)) return;
-  if (keyGesture.armed) return;
-  // Don't arm during a click-and-drag: a held pointer button means the user
-  // is doing something else (text selection, line drag, etc.) and the swipe
-  // gesture would interfere.
   if (plugin.mouse.isButtonDown) return;
-  if (!areModifiersExactMatch(e, settings)) return;
-  keyGesture.armed = true;
-  keyGesture.done = false;
+
+  if (areModifiersExactMatch(e, settings)) {
+    if (!keyGesture.armed) {
+      keyGesture.armed = true;
+      keyGesture.done = false;
+    }
+  } else if (keyGesture.armed) {
+    // An extra modifier was added on top of an already-matching combination:
+    // the key state no longer matches exactly, so disarm to avoid the next
+    // mouse move wrongly triggering a gesture.
+    keyGesture.armed = false;
+    keyGesture.isTracking = false;
+    keyGesture.done = false;
+  }
 }
 
 /**
