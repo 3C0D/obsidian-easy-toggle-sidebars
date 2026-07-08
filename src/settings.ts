@@ -1,5 +1,5 @@
 import type { App } from 'obsidian';
-import { PluginSettingTab, Setting } from 'obsidian';
+import { Notice, PluginSettingTab, Setting } from 'obsidian';
 import type EasytoggleSidebar from './main.ts';
 import { toggleColor, autoHideON } from './autoHide.ts';
 import { DEFAULT_SETTINGS, UI_CONSTANTS } from './constants/index.ts';
@@ -138,6 +138,12 @@ export class ETSSettingTab extends PluginSettingTab {
         });
       });
 
+    new Setting(containerEl).setName('Swipe gesture modifiers').setHeading();
+    containerEl.createEl('p', {
+      text: 'At least one modifier below must stay enabled. Note: on some EU keyboards, AltGr can be reported as Ctrl, so a Ctrl-only configuration may also trigger on AltGr.',
+      cls: 'setting-item-description'
+    });
+
     new Setting(containerEl)
       .setName('Swipe gesture: Shift')
       .setDesc('Require Shift to be held for the swipe gesture')
@@ -152,6 +158,7 @@ export class ETSSettingTab extends PluginSettingTab {
               !this.plugin.settings.trackpadModifiers.meta
             ) {
               toggle.setValue(true);
+              new Notice('At least one modifier must stay enabled', UI_CONSTANTS.NOTICE_DURATION);
               return;
             }
             this.plugin.settings.trackpadModifiers.shift = value;
@@ -173,6 +180,7 @@ export class ETSSettingTab extends PluginSettingTab {
               !this.plugin.settings.trackpadModifiers.meta
             ) {
               toggle.setValue(true);
+              new Notice('At least one modifier must stay enabled', UI_CONSTANTS.NOTICE_DURATION);
               return;
             }
             this.plugin.settings.trackpadModifiers.ctrl = value;
@@ -194,6 +202,7 @@ export class ETSSettingTab extends PluginSettingTab {
               !this.plugin.settings.trackpadModifiers.meta
             ) {
               toggle.setValue(true);
+              new Notice('At least one modifier must stay enabled', UI_CONSTANTS.NOTICE_DURATION);
               return;
             }
             this.plugin.settings.trackpadModifiers.alt = value;
@@ -215,6 +224,7 @@ export class ETSSettingTab extends PluginSettingTab {
               !this.plugin.settings.trackpadModifiers.alt
             ) {
               toggle.setValue(true);
+              new Notice('At least one modifier must stay enabled', UI_CONSTANTS.NOTICE_DURATION);
               return;
             }
             this.plugin.settings.trackpadModifiers.meta = value;

@@ -1,40 +1,5 @@
 import type EasytoggleSidebar from './main.ts';
-import type { ETSSettings } from './types/settings.ts';
-
-/**
- * Checks whether the modifier combination required by
- * settings.trackpadModifiers is exactly held: required modifiers must be
- * pressed AND non-required modifiers must NOT be pressed. This prevents
- * interference with other plugins that use a superset of modifiers.
- *
- * AltGraph handling: on keyboards with AltGr (common in EU layouts), the
- * key reports both altKey and ctrlKey as true simultaneously. We treat
- * AltGraph as active only when BOTH Alt and Ctrl are required in config,
- * otherwise the exact-match would fail incorrectly.
- */
-function areModifierKeysPressed(event: KeyboardEvent, settings: ETSSettings): boolean {
-  const required = settings.trackpadModifiers;
-
-  // AltGraph is detected as key === 'AltGraph' and sets both altKey and
-  // ctrlKey to true. It should only count as a match when both alt and
-  // ctrl are required in the configuration.
-  const isAltGraph = event.key === 'AltGraph';
-  const altGraphMatches = isAltGraph && required.alt && required.ctrl;
-
-  const pressedState = {
-    alt: event.altKey || altGraphMatches,
-    shift: event.shiftKey,
-    ctrl: event.ctrlKey || altGraphMatches,
-    meta: event.metaKey
-  };
-
-  return (
-    required.alt === pressedState.alt &&
-    required.shift === pressedState.shift &&
-    required.ctrl === pressedState.ctrl &&
-    required.meta === pressedState.meta
-  );
-}
+import { areModifiersExactMatch } from './utils/modifierUtils.ts';
 
 const MODIFIER_KEYS = new Set(['Control', 'Alt', 'Shift', 'Meta', 'AltGraph']);
 
@@ -54,7 +19,7 @@ export function keydownHandler(plugin: EasytoggleSidebar, e: KeyboardEvent): voi
   // is doing something else (text selection, line drag, etc.) and the swipe
   // gesture would interfere.
   if (plugin.mouse.isButtonDown) return;
-  if (!areModifierKeysPressed(e, settings)) return;
+  if (!areModifiersExactMatch(e, settings)) return;
   keyGesture.armed = true;
   keyGesture.done = false;
 }
@@ -67,7 +32,7 @@ export function keydownHandler(plugin: EasytoggleSidebar, e: KeyboardEvent): voi
 export function keyupHandler(plugin: EasytoggleSidebar, e: KeyboardEvent): void {
   const { keyGesture, settings } = plugin;
   if (!MODIFIER_KEYS.has(e.key)) return;
-  if (areModifierKeysPressed(e, settings)) return;
+  if (areModifiersExactMatch(e, settings)) return;
   keyGesture.armed = false;
   keyGesture.isTracking = false;
   keyGesture.done = false;
