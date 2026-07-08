@@ -31,7 +31,7 @@ function areModifiersHeld(evt: MouseEvent, settings: ETSSettings): boolean {
 /**
  * Handles reveal on click: if the user clicks on the view header title
  * while holding the configured modifiers, reveals the active file.
- * Useful in views like Monaco where the swipe-up gesture isn't available.
+ * Useful in views like Monaco (https://github.com/3C0D/obsidian-code-files-modif) where the swipe-up gesture isn't available.
  */
 export function handleRevealClick(
   app: App,

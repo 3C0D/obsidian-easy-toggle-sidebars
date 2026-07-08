@@ -1,50 +1,43 @@
 # Easy Toggle Sidebars
 
-Toggle Obsidian's sidebars with simple swipe gestures — works with both **mouse** and **trackpad**, no click required.
+## How It Works
 
-## Swipe Gestures
+**1. Choose a modifier combination** — pick any combination of Ctrl, Shift, Alt, Win/Meta (e.g. Ctrl+Shift).
 
-Hold your configured modifier key(s) and swipe anywhere in the window. Works on **any view type** (editor, Canvas, Excalidraw, etc.).
+**2. Hold the modifiers and move the mouse** over the editor (no click needed):
 
-> **No drag, no click** — just hold the modifier(s) first, then swipe. The gesture won't trigger during a click-and-drag (e.g. text selection), so it never interferes with your normal workflow.
+| Direction | Action |
+| --------- | ------ |
+| → Right | Toggle right sidebar |
+| ← Left | Toggle left sidebar |
+| ↓ Down | Toggle **both** sidebars |
+| ↑ Up | Reveal active file in the file explorer |
 
-| Swipe direction | Action                                  |
-| --------------- | --------------------------------------- |
-| ← Left          | Toggle left sidebar                     |
-| → Right         | Toggle right sidebar                    |
-| ↓ Down          | Toggle **both** sidebars                |
-| ↑ Up            | Reveal active file in the file explorer |
+Works with both **mouse** and **trackpad**.
 
-### Configurable Modifiers
+> **Important:** Do not click before moving. This limitation is intentional — it prevents interference with other operations like text selection or drag-and-drop.
 
-Choose any combination of modifier keys to activate the swipe gesture:
+**3. Release the modifiers between successive gestures.**
 
-- **Shift**
-- **Ctrl**
-- **Alt**
-- **Win / Meta** (Meta on Linux, Cmd on Mac)
+---
 
-You can use a single key (e.g. Ctrl) or combine several (e.g. Ctrl + Alt). Note that **Ctrl + Alt is equivalent to AltGr** on keyboards that have an AltGr key. The matching is **exact**: if you configure Ctrl + Alt, holding an extra key like Shift will **not** trigger the gesture. This prevents conflicts with other plugins that may use different modifier combinations.
+**4. Reveal on title click** — hold your modifier combination and click the view header title to reveal the active file in the file explorer.
 
-> A **threshold** setting (in pixels) controls the minimum swipe distance needed to trigger an action. Increase it if gestures trigger too easily, decrease it if you need to swipe further.
+**5. Auto-Hide** — when enabled, clicking inside the editor automatically closes the sidebars. A ribbon icon lets you toggle auto-hide on/off.
 
-## Other Features
+**6. Pin tabs** — double-click any tab header to toggle its pin state. Works in any window and any view type.
 
-### Reveal on Title Click
+**7. Works on virtually all views and secondary windows** — including Canvas, Excalidraw, etc.
 
-Click the **view header title** while holding your configured modifiers to reveal the active file in the file explorer. Useful in views like Monaco-based editors where the swipe-up gesture isn't available.
+**8. Minimal Editor Width** — sidebars are automatically hidden when the editor area becomes narrower than a configured pixel threshold.
 
-### Toggle Pin on Tab Header
+---
 
-**Double-click** any tab header to toggle its pin state. Works in any window and any view type.
+## Modifier Matching
 
-### Auto-Hide
+The matching is **exact**: if you configure Ctrl+Shift, holding an extra key like Alt will **not** trigger the gesture. This prevents conflicts with other plugins.
 
-When enabled, clicking inside any **workspace leaf** (editor, Canvas, etc.) automatically hides the sidebars, except when clicking the view header (title bar). A **ribbon icon** lets you quickly toggle auto-hide on/off (highlighted when active).
-
-### Minimal Editor Width
-
-When the editor area becomes narrower than the configured threshold (in pixels), sidebars are automatically hidden to give more space to the editor.
+> Note: **Ctrl+Alt is equivalent to AltGr** on keyboards that have an AltGr key.
 
 ## Commands
 
@@ -53,18 +46,22 @@ Two commands are available in the command palette (assignable to hotkeys):
 - **Toggle both sidebars** — opens or closes both sidebars at once
 - **Toggle autohide sidebars** — enables or disables the auto-hide feature
 
+## Related Plugin
+
+[obsidian-gesture-commander](https://github.com/3C0D/obsidian-gesture-commander) uses the same gesture process to trigger arbitrary commands. Both plugins can coexist thanks to the wide range of possible modifier combinations.
+
 ## Settings Overview
 
-| Setting                                   | Description                                                     |
-| ----------------------------------------- | --------------------------------------------------------------- |
-| Auto hide                                 | Auto-hide sidebars when clicking the editor; adds a ribbon icon |
-| Minimal editor width                      | Auto-hide sidebars when editor is narrower than threshold       |
-| Set editor min width                      | Pixel threshold for minimal editor width (200–800 px)           |
-| Double click on tab headers to toggle pin | Enable/disable the tab pin toggle                               |
-| Reveal file on title click with modifiers | Enable/disable the title click reveal                           |
-| Swipe gesture                             | Enable/disable the modifier + swipe gesture                     |
-| Swipe gesture: Shift / Ctrl / Alt / Win   | Choose which modifier(s) to require                             |
-| Swipe threshold (px)                      | Minimum swipe distance to trigger an action (30–200 px)         |
+| Setting | Description |
+| ------- | ----------- |
+| Auto hide | Auto-hide sidebars when clicking the editor; adds a ribbon icon |
+| Minimal editor width | Auto-hide sidebars when editor is narrower than threshold |
+| Set editor min width | Pixel threshold for minimal editor width (200–800 px) |
+| Double click on tab headers to toggle pin | Enable/disable the tab pin toggle |
+| Reveal file on title click with modifiers | Enable/disable the title click reveal |
+| Swipe gesture | Enable/disable the modifier + swipe gesture |
+| Swipe gesture: Shift / Ctrl / Alt / Win | Choose which modifier(s) to require |
+| Swipe threshold (px) | Minimum swipe distance to trigger an action (30–200 px) |
 
 ## Development
 

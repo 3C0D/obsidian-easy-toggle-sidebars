@@ -12,16 +12,28 @@ export class WelcomeModal extends Modal {
   onOpen(): void {
     const { contentEl } = this;
 
-    contentEl.createEl('h2', { text: "Easy Toggle Sidebars — What's new" });
+    contentEl.createEl('h2', { text: "Easy Toggle Sidebars: What's New" });
 
     const content = `
+      <p>Pick a modifier combination (Ctrl, Shift, Alt, Win/Meta), hold it and move the mouse over the editor. No click needed.</p>
+      <table>
+        <tr><th>Direction</th><th>Action</th></tr>
+        <tr><td>→ Right</td><td>Toggle right sidebar</td></tr>
+        <tr><td>← Left</td><td>Toggle left sidebar</td></tr>
+        <tr><td>↓ Down</td><td>Toggle both sidebars</td></tr>
+        <tr><td>↑ Up</td><td>Reveal active file in explorer</td></tr>
+      </table>
+      <p>Release the modifiers between two gestures.</p>
+      <p>Also:</p>
       <ul>
-        <li><b>Modifier + swipe gesture:</b> Configure your modifier keys (Shift, Ctrl, Alt, Win/Meta), hold them, and swipe. No click needed.</li>
-        <li><b>Works everywhere:</b> The swipe gesture and auto-hide both work in all views — editor, Canvas, and more.</li>
-        <li><b>No more mouse button gestures:</b> Right-click and middle-click gestures have been removed. Everything is now modifier + swipe.</li>
-        <li><b>Click-and-drag safe:</b> The gesture won't activate if you're holding a mouse button (e.g. selecting text or dragging).</li>
-        <li><b>Exact modifier matching:</b> Only the exact configured combination triggers the gesture, preventing conflicts with other plugins.</li>
+        <li>Reveal on title click: hold modifiers and click the view header</li>
+        <li>Auto-hide: sidebars close on editor click (ribbon icon)</li>
+        <li>Pin tabs: double-click a tab header</li>
+        <li>Minimal editor width: sidebars auto-hide below a set threshold</li>
+        <li>Works on Canvas, Excalidraw and secondary windows (for pin)</li>
       </ul>
+      <p>Do not click before moving the mouse, this avoids conflicts with text selection and drag-and-drop.</p>
+      <p>Full details in the <a href="https://github.com/3C0D/obsidian-easy-toggle-sidebars">README</a>.</p>
     `;
     contentEl.createDiv('', (el) => {
       el.innerHTML = content;
