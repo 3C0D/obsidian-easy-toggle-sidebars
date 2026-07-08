@@ -15,7 +15,7 @@ export class WelcomeModal extends Modal {
     contentEl.createEl('h2', { text: "Easy Toggle Sidebars: What's New" });
 
     const content = `
-      <p>Pick a modifier combination (Ctrl, Shift, Alt, Win/Meta), hold it and move the mouse over the editor. No click needed.</p>
+      <p>Pick a modifier combination in settings (Ctrl, Shift, Alt, Win/Meta), hold it and just move the mouse/trackpad over the editor without clicking.</p>
       <table>
         <tr><th>Direction</th><th>Action</th></tr>
         <tr><td>→ Right</td><td>Toggle right sidebar</td></tr>
@@ -30,7 +30,8 @@ export class WelcomeModal extends Modal {
         <li>Auto-hide: sidebars close on editor click (ribbon icon)</li>
         <li>Pin tabs: double-click a tab header</li>
         <li>Minimal editor width: sidebars auto-hide below a set threshold</li>
-        <li>Works on Canvas, Excalidraw and secondary windows (for pin)</li>
+        <li>Swipe gesture works on Canvas, Excalidraw and other view types</li>
+        <li>Pin tabs also works in secondary windows</li>
       </ul>
       <p>Do not click before moving the mouse, this avoids conflicts with text selection and drag-and-drop.</p>
       <p>Full details in the <a href="https://github.com/3C0D/obsidian-easy-toggle-sidebars">README</a>.</p>

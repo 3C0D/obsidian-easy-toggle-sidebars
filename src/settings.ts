@@ -223,7 +223,7 @@ export class ETSSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Swipe threshold(px)')
+      .setName('Swipe threshold (px)')
       .setDesc('minimal accumulated swipe distance to trigger a toggle')
       .addSlider((slider) => {
         slider
