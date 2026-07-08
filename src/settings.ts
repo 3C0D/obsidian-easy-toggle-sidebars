@@ -152,7 +152,10 @@ export class ETSSettingTab extends PluginSettingTab {
               !this.plugin.settings.trackpadModifiers.meta
             ) {
               toggle.setValue(true);
-              new Notice('At least one modifier must stay enabled', UI_CONSTANTS.NOTICE_DURATION);
+              new Notice(
+                'At least one modifier must stay enabled',
+                UI_CONSTANTS.NOTICE_DURATION
+              );
               return;
             }
             this.plugin.settings.trackpadModifiers.shift = value;
@@ -174,7 +177,10 @@ export class ETSSettingTab extends PluginSettingTab {
               !this.plugin.settings.trackpadModifiers.meta
             ) {
               toggle.setValue(true);
-              new Notice('At least one modifier must stay enabled', UI_CONSTANTS.NOTICE_DURATION);
+              new Notice(
+                'At least one modifier must stay enabled',
+                UI_CONSTANTS.NOTICE_DURATION
+              );
               return;
             }
             this.plugin.settings.trackpadModifiers.ctrl = value;
@@ -196,7 +202,10 @@ export class ETSSettingTab extends PluginSettingTab {
               !this.plugin.settings.trackpadModifiers.meta
             ) {
               toggle.setValue(true);
-              new Notice('At least one modifier must stay enabled', UI_CONSTANTS.NOTICE_DURATION);
+              new Notice(
+                'At least one modifier must stay enabled',
+                UI_CONSTANTS.NOTICE_DURATION
+              );
               return;
             }
             this.plugin.settings.trackpadModifiers.alt = value;
@@ -218,7 +227,10 @@ export class ETSSettingTab extends PluginSettingTab {
               !this.plugin.settings.trackpadModifiers.alt
             ) {
               toggle.setValue(true);
-              new Notice('At least one modifier must stay enabled', UI_CONSTANTS.NOTICE_DURATION);
+              new Notice(
+                'At least one modifier must stay enabled',
+                UI_CONSTANTS.NOTICE_DURATION
+              );
               return;
             }
             this.plugin.settings.trackpadModifiers.meta = value;

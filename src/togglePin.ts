@@ -17,10 +17,7 @@ export async function togglePin(
   leaf.togglePinned();
 }
 
-function getLeafFromTabHeader(
-  app: App,
-  target: HTMLElement
-): WorkspaceLeaf | null {
+function getLeafFromTabHeader(app: App, target: HTMLElement): WorkspaceLeaf | null {
   const tabHeader = target.closest('.workspace-tab-header');
   if (!tabHeader) return null;
 
