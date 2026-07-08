@@ -23,7 +23,6 @@ export async function mouseupHandler(
 
   // Double click on tab header: toggle pin
   if (evt.detail === 2) {
-    if (!plugin.settings.togglePin) return;
     if (!ZoneDetector.isTabHeader(target)) return;
     await togglePin(app, evt, plugin);
   }

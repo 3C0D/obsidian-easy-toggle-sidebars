@@ -5,6 +5,7 @@ import { revealActiveFile } from './reveal.ts';
 export function mousemoveHandler(plugin: EasytoggleSidebar, e: MouseEvent): void {
   const { keyGesture, settings } = plugin;
 
+  if (!settings.useTrackpadSwipe) return;
   if (!keyGesture.armed || keyGesture.done) return;
 
   // First mousemove after arming: seed the start position.

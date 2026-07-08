@@ -105,8 +105,8 @@ export default class EasytoggleSidebar extends Plugin {
       );
     }
 
-    // mouseup always registers: Toggle Pin applies to every window, the rest
-    // of mouseupHandler self-gates on isMainWindow.
+    // mouseup always registers: Toggle Pin, reveal-on-click and double-click
+    // all work in every window, including popouts.
     this.registerDomEvent(doc, 'mouseup', (e: MouseEvent) =>
       mouseupHandler(this, this.app, e, isMainWindow)
     );
