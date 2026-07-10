@@ -30,7 +30,7 @@ export function mousemoveHandler(plugin: EasytoggleSidebar, e: MouseEvent): void
         toggleBothSidebars(plugin);
       } else {
         // Vertical upward swipe → reveal active file in explorer
-        revealActiveFile(plugin.app);
+        void revealActiveFile(plugin.app);
       }
     } else if (absX >= absY) {
       // Horizontal swipe → left or right sidebar

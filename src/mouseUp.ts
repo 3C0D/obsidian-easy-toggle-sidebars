@@ -16,7 +16,7 @@ export async function mouseupHandler(
   // Single left click: reveal file in explorer (with modifiers held)
   if (evt.detail === 1) {
     if (plugin.settings.reveal) {
-      handleRevealClick(app, evt, plugin.settings, target);
+      await handleRevealClick(app, evt, plugin.settings, target);
     }
     return;
   }
